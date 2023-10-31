@@ -49,6 +49,15 @@ function App() {
     }
   };
 
+
+  const handleMapLoad = (map: any) => {
+    console.log("Google Map is loaded!", map);
+  };
+
+  const handleMapClick = (e: any) => {
+    console.log("Map clicked at:", e.latLng.toString());
+  };
+
   return (
     <div style={{ display: "flex" }}>
       <div style={{ width: "30%" }}>
@@ -68,10 +77,17 @@ function App() {
       <LoadScript
         googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}
       >
-        <GoogleMap
+        {/* <GoogleMap
           mapContainerStyle={containerStyle}
           center={position}
           zoom={13}
+        > */}
+                <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={position}
+          zoom={13}
+          onLoad={handleMapLoad}  // 地図が読み込まれたときにhandleMapLoadが呼び出される
+          onClick={handleMapClick}  // 地図がクリックされたときにhandleMapClickが呼び出される
         >
           {/* 東京駅の上にマーカーを配置 */}
           <Marker position={tokyoStationPosition} />
