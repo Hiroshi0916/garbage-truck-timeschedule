@@ -1,6 +1,6 @@
 // App.tsx
-import React, { useState } from "react";
-import { GoogleMap, LoadScript,Marker } from "@react-google-maps/api";
+import React, { useCallback, useState } from "react";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 const containerStyle = {
   width: "70%",
@@ -49,6 +49,22 @@ function App() {
     }
   };
 
+  // 現在地を取得する関数
+  const getCurrentLocation = useCallback(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.log("Latitude:", position.coords.latitude);
+          console.log("Longitude:", position.coords.longitude);
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }, []);
 
   const handleMapLoad = (map: any) => {
     console.log("Google Map is loaded!", map);
@@ -72,25 +88,23 @@ function App() {
             onChange={(e) => setPostalCode(e.target.value)}
           />
         </div>
+        {/* 現在地を取得するボタンを追加 */}
+        <button onClick={getCurrentLocation}>現在地を取得</button>
         <button onClick={handleSearch}>検索</button>
       </div>
       <LoadScript
         googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}
       >
-        {/* <GoogleMap
+        <GoogleMap
           mapContainerStyle={containerStyle}
           center={position}
           zoom={13}
-        > */}
-                <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={position}
-          zoom={13}
-          onLoad={handleMapLoad}  // 地図が読み込まれたときにhandleMapLoadが呼び出される
-          onClick={handleMapClick}  // 地図がクリックされたときにhandleMapClickが呼び出される
+          onLoad={handleMapLoad} // 地図が読み込まれたときにhandleMapLoadが呼び出される
+          onClick={handleMapClick} // 地図がクリックされたときにhandleMapClickが呼び出される
         >
           {/* 東京駅の上にマーカーを配置 */}
           <Marker position={tokyoStationPosition} />
+          {position && <Marker position={position} />}
         </GoogleMap>
       </LoadScript>
     </div>
