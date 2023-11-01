@@ -1,21 +1,16 @@
-// App.tsx
-import React, { useCallback, useState } from "react";
+import React, { useCallback,  useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 const containerStyle = {
   width: "70%",
   height: "400px",
 };
-
-const tokyoStationPosition = {
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
+const defaultPosition = {
   lat: 35.681236,
   lng: 139.767125,
 };
 
-const defaultPosition = {
-  lat: 35.6895,
-  lng: 139.6917,
-};
 
 function App() {
   const [address, setAddress] = useState("");
@@ -27,13 +22,16 @@ function App() {
     { lat: number; lng: number } | undefined
   >(defaultPosition);
 
+  console.log(
+    "Google Maps API Key:",
+    process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+  );
+
   const handleSearch = async () => {
+    console.log("Sending address:", address);
     try {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${
-          address || postalCode
-        }&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
-      );
+      // const response = await fetch(`/geocode?address=${address || postalCode}`);
+      const response = await fetch(`${BASE_URL}/geocode?address=${address || postalCode}`);
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -43,6 +41,7 @@ function App() {
 
       if (data.status === "OK") {
         const location = data.results[0].geometry.location;
+        console.log(location);
         setPosition({ lat: location.lat, lng: location.lng });
         setLat(location.lat);
         setLng(location.lng);
@@ -55,23 +54,31 @@ function App() {
   };
 
   // 現在地を取得する関数
-  const getCurrentLocation = useCallback(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          console.log("Latitude:", position.coords.latitude);
-          console.log("Longitude:", position.coords.longitude);
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
+  const getCurrentLocation = useCallback(async () => {
+    try {
+      const response = await fetch("/current-location");
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+
+      if (data.location) {
+        setPosition({ lat: data.location.lat, lng: data.location.lng });
+        setLat(data.location.lat);
+        setLng(data.location.lng);
+      } else {
+        console.error("Error fetching current location");
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
   }, []);
 
   const handleMapLoad = (map: any) => {
+    console.log("Position:", position);
+
     console.log("Google Map is loaded!", map);
   };
 
@@ -109,11 +116,9 @@ function App() {
           mapContainerStyle={containerStyle}
           center={position}
           zoom={13}
-          onLoad={handleMapLoad} // 地図が読み込まれたときにhandleMapLoadが呼び出される
-          onClick={handleMapClick} // 地図がクリックされたときにhandleMapClickが呼び出される
+          onLoad={handleMapLoad}
+          onClick={handleMapClick}
         >
-          {/* 東京駅の上にマーカーを配置 */}
-          <Marker position={tokyoStationPosition} />
           {position && <Marker position={position} />}
         </GoogleMap>
       </LoadScript>
