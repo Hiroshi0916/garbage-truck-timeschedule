@@ -1,9 +1,17 @@
-import React, { useCallback,  useState } from "react";
+import React, { useCallback, useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import Navbar from "./Navbar";
 
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate
+} from "react-router-dom";
+import UserRegistration from "./UserRegistration";
+
 const containerStyle = {
-  width: "100%", // 地図コンテナを親要素の100%の幅にする
+  width: "100%", 
   height: "400px",
 };
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
@@ -11,7 +19,6 @@ const defaultPosition = {
   lat: 35.681236,
   lng: 139.767125,
 };
-
 
 function App() {
   const [address, setAddress] = useState("");
@@ -23,6 +30,8 @@ function App() {
     { lat: number; lng: number } | undefined
   >(defaultPosition);
 
+
+
   console.log(
     "Google Maps API Key:",
     process.env.REACT_APP_GOOGLE_MAPS_API_KEY
@@ -32,7 +41,9 @@ function App() {
     console.log("Sending address:", address);
     try {
       // const response = await fetch(`/geocode?address=${address || postalCode}`);
-      const response = await fetch(`${BASE_URL}/geocode?address=${address || postalCode}`);
+      const response = await fetch(
+        `${BASE_URL}/geocode?address=${address || postalCode}`
+      );
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -87,50 +98,55 @@ function App() {
     console.log("Map clicked at:", e.latLng.toString());
   };
 
+
+
   return (
-    <div>
-      <Navbar /> {/* Navbar コンポーネントを挿入 */}
-      <div style={{}}>
+    <Router>
+      <Navbar />
+      <Routes> {/* <- Routesの閉じタグ */}
+        <Route path="/" element={
+          <div style={{ display: 'flex' }}>
+            <div style={{ width: '30%' }}>
+              <div>
+                <label>住所:</label>
+                <input
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </div>
+              <div>
+                <label>郵便番号:</label>
+                <input
+                  value={postalCode}
+                  onChange={(e) => setPostalCode(e.target.value)}
+                />
+              </div>
+              <button onClick={getCurrentLocation}>現在地を取得</button>
+              <button onClick={handleSearch}>検索</button>
+              <div>
+                緯度: {lat ? lat.toFixed(6) : "N/A"}
+                <br />
+                経度: {lng ? lng.toFixed(6) : "N/A"}
+              </div>
+            </div>
+            <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}>
+              <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={position}
+                zoom={13}
+                onLoad={handleMapLoad}
+                onClick={handleMapClick}
+              >
+                {position && <Marker position={position} />}
+              </GoogleMap>
+            </LoadScript>
 
-    <div style={{ display: "flex" }}>
-      <div style={{ width: "30%" }}>
-        <div>
-          <label>住所:</label>
-          <input value={address} onChange={(e) => setAddress(e.target.value)} />
-        </div>
-        <div>
-          <label>郵便番号:</label>
-          <input
-            value={postalCode}
-            onChange={(e) => setPostalCode(e.target.value)}
-          />
-        </div>
-        {/* 現在地を取得するボタンを追加 */}
-        <button onClick={getCurrentLocation}>現在地を取得</button>
-        <button onClick={handleSearch}>検索</button>
-        <div>
-          緯度: {lat ? lat.toFixed(6) : "N/A"}
-          <br />
-          経度: {lng ? lng.toFixed(6) : "N/A"}
-        </div>
-      </div>
-      <LoadScript
-        googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}
-      >
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={position}
-          zoom={13}
-          onLoad={handleMapLoad}
-          onClick={handleMapClick}
-        >
-          {position && <Marker position={position} />}
-        </GoogleMap>
-      </LoadScript>
-    </div>
-
-    </div>
-      </div>
+          </div>
+        } />
+         
+        <Route path="/user-registration" element={<UserRegistration />} />
+        </Routes> {/* <- Routesの閉じタグ */}
+    </Router>
   );
 }
 
