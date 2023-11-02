@@ -1,8 +1,9 @@
 import React, { useCallback,  useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import Navbar from "./Navbar";
 
 const containerStyle = {
-  width: "70%",
+  width: "100%", // 地図コンテナを親要素の100%の幅にする
   height: "400px",
 };
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
@@ -87,6 +88,14 @@ function App() {
   };
 
   return (
+    <div>
+      <Navbar /> {/* Navbar コンポーネントを挿入 */}
+      <div style={{ display: "flex" }}>
+
+
+
+
+
     <div style={{ display: "flex" }}>
       <div style={{ width: "30%" }}>
         <div>
@@ -123,6 +132,9 @@ function App() {
         </GoogleMap>
       </LoadScript>
     </div>
+
+    </div>
+      </div>
   );
 }
 
