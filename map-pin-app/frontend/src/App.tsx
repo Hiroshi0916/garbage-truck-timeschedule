@@ -21,6 +21,11 @@ const defaultPosition = {
 };
 
 function App() {
+  const containerStyle = {
+    width: "100%", 
+    height: "400px",
+    marginRight: "50px",
+  };
   const [address, setAddress] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [lat, setLat] = useState<number | null>(null);
@@ -129,6 +134,8 @@ function App() {
                 経度: {lng ? lng.toFixed(6) : "N/A"}
               </div>
             </div>
+
+            <div style={{ flex: 1, marginRight: '50px' }}> {/* ここにマージンを追加 */}
             <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}>
               <GoogleMap
                 mapContainerStyle={containerStyle}
@@ -140,12 +147,12 @@ function App() {
                 {position && <Marker position={position} />}
               </GoogleMap>
             </LoadScript>
-
+            </div>
           </div>
         } />
          
         <Route path="/user-registration" element={<UserRegistration />} />
-        </Routes> {/* <- Routesの閉じタグ */}
+        </Routes> 
     </Router>
   );
 }
