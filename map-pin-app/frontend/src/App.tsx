@@ -90,11 +90,7 @@ function App() {
   return (
     <div>
       <Navbar /> {/* Navbar コンポーネントを挿入 */}
-      <div style={{ display: "flex" }}>
-
-
-
-
+      <div style={{}}>
 
     <div style={{ display: "flex" }}>
       <div style={{ width: "30%" }}>
