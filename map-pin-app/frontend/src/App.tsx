@@ -111,16 +111,21 @@ function App() {
                     onChange={(e) => setAddress(e.target.value)}
                   />
                 </div>
-                <div>
+                <div className="App-input-group">
                   <label>郵便番号:</label>
                   <input
+                    className="App-input"
                     value={postalCode}
                     onChange={(e) => setPostalCode(e.target.value)}
                   />
                 </div>
-                <button onClick={getCurrentLocation}>現在地を取得</button>
-                <button onClick={handleSearch}>検索</button>
-                <div>
+                <button className="App-button" onClick={getCurrentLocation}>
+                  現在地を取得
+                </button>
+                <button className="App-button" onClick={handleSearch}>
+                  検索
+                </button>
+                <div className="App-coordinates">
                   緯度: {lat ? lat.toFixed(6) : "N/A"}
                   <br />
                   経度: {lng ? lng.toFixed(6) : "N/A"}
@@ -134,7 +139,7 @@ function App() {
                   }
                 >
                   <GoogleMap
-                    mapContainerStyle={containerStyle}
+                    className="App-map-style"
                     center={position}
                     zoom={13}
                     onLoad={handleMapLoad}
