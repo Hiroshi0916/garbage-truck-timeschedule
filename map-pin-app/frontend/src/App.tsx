@@ -2,8 +2,6 @@ import React, { useCallback, useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import Navbar from "./Navbar";
 import './App.css'; 
-
-
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,10 +10,6 @@ import {
 } from "react-router-dom";
 import UserRegistration from "./UserRegistration";
 
-const containerStyle = {
-  width: "100%", 
-  height: "400px",
-};
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 const defaultPosition = {
   lat: 35.681236,
@@ -23,11 +17,7 @@ const defaultPosition = {
 };
 
 function App() {
-  const containerStyle = {
-    width: "100%", 
-    height: "400px",
-    marginRight: "50px",
-  };
+
   const [address, setAddress] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [lat, setLat] = useState<number | null>(null);
@@ -106,7 +96,6 @@ function App() {
   const handleMapClick = (e: any) => {
     console.log("Map clicked at:", e.latLng.toString());
   };
-
 
 
   return (
