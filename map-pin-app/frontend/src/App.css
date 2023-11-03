@@ -40,26 +40,28 @@
 
 .App-map-container {
   flex: 1;
-
+  padding-right: 5%; /* 右側に5%のパディングを追加 */
 }
 
 .App-layout {
   display: flex;
   justify-content: center;
   align-items: flex-start; 
+  justify-content: space-between;
   height: 100vh;
 }
 
 .App-search-container {
-  width: 30%;
-  margin-left:10%;
+  
+  width: 15%;
+  margin-left:5%;
+  margin-right:5%;
 }
 
 .App-map-style {
-  width: '100%';
+  width: '80%';
   height: '400px';
-  margin-right: '50px';
-
+  margin-right: 10%;
 }
 
 .App-search-section {
@@ -70,5 +72,12 @@
 }
 
 .App-input-group {
-  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column; /* 要素を縦に並べる */
+  align-items: flex-start; /* 要素を左揃えにする */
+  margin-bottom: 1em; /* 下にマージンを追加して要素間にスペースを作る */
+}
+
+.App-input {
+  width: 80%; /* 入力フィールドの幅を80%に設定 */
 }
