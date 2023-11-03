@@ -45,11 +45,13 @@ function App() {
   const handleSearch = async () => {
     console.log("Sending address:", address);
     try {
-      // const response = await fetch(`/geocode?address=${address || postalCode}`);
       const response = await fetch(
-        `${BASE_URL}/geocode?address=${address || postalCode}`
+        `${BASE_URL}/geocode?address=${address || postalCode}`,
+        {
+          method: "GET", // GETリクエストでバックエンドに送信
+        }
       );
-
+  
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }

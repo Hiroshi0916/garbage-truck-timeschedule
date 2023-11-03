@@ -22,12 +22,17 @@ app.listen(PORT, () => {
 
 
 app.get('/geocode', async (req, res) => {
-    console.log("TEST");
-    const addressOrPostalCode = req.query.address || req.query.postalCode;
-    
-    // ここでフロントエンドから送られてきた住所や郵便番号をログに表示します
-    console.log("Received address or postal code:", addressOrPostalCode);
-    
+    const address = req.query.address;
+    const postalCode = req.query.postalCode;
+
+        // ここでフロントエンドから送られてきた住所や郵便番号をログに表示します
+        if (address) {
+            console.log("Received address:", address);
+          }
+          if (postalCode) {
+            console.log("Received postal code:", postalCode);
+          }
+        
     const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${addressOrPostalCode}&key=${GOOGLE_MAPS_API_KEY}`);
     const data = await response.json();
 
