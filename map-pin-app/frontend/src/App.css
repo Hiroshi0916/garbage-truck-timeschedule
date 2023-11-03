@@ -52,13 +52,14 @@
 
 .App-search-container {
   width: 30%;
-  margin-right: 20px;
+  margin-left:10%;
 }
 
 .App-map-style {
   width: '100%';
   height: '400px';
   margin-right: '50px';
+
 }
 
 .App-search-section {
