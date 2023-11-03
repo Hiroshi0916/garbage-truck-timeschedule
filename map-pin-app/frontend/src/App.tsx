@@ -112,7 +112,7 @@ function App() {
       <Navbar />
       <Routes> {/* <- Routesの閉じタグ */}
         <Route path="/" element={
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <div style={{ width: '30%' }}>
               <div>
                 <label>住所:</label>
