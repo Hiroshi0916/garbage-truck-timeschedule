@@ -112,6 +112,7 @@ function App() {
       <Navbar />
       <Routes> {/* <- Routesの閉じタグ */}
         <Route path="/" element={
+          <div>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <div style={{ width: '30%' }}>
               <div>
@@ -136,8 +137,10 @@ function App() {
                 経度: {lng ? lng.toFixed(6) : "N/A"}
               </div>
             </div>
+          </div>
 
-            <div style={{ flex: 1, marginRight: '50px' }}> {/* ここにマージンを追加 */}
+<div>
+<div style={{ flex: 1, marginRight: '50px' }}> {/* ここにマージンを追加 */}
             <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}>
               <GoogleMap
                 mapContainerStyle={containerStyle}
@@ -150,6 +153,8 @@ function App() {
               </GoogleMap>
             </LoadScript>
             </div>
+</div>
+
           </div>
         } />
          
