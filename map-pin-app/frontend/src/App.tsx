@@ -9,6 +9,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import UserRegistration from "./UserRegistration";
+import AdminPage from "./AdminPage";
 
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 const defaultPosition = {
@@ -18,8 +19,8 @@ const defaultPosition = {
 
 function App() {
   const mapContainerStyle = {
-    width: '100%',
-    height: '400px',
+    width: "100%",
+    height: "400px",
   };
   const [address, setAddress] = useState("");
   const [postalCode, setPostalCode] = useState("");
@@ -158,6 +159,7 @@ function App() {
         />
 
         <Route path="/user-registration" element={<UserRegistration />} />
+        <Route path="/admin" element={<AdminPage />} /> 
       </Routes>
     </Router>
   );
