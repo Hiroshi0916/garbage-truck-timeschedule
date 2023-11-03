@@ -36,3 +36,26 @@
     transform: rotate(360deg);
   }
 }
+
+
+.App-map-container {
+  flex: 1;
+
+}
+
+.App-search-container {
+  width: 30%;
+}
+
+.App-map-style {
+  width: '100%';
+  height: '400px';
+  margin-right: '50px';
+}
+
+.App-search-section {
+  display: 'flex';
+  justify-content: 'center';
+  align-items: 'center';
+  height: '100vh';
+}

@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import Navbar from "./Navbar";
+import './App.css'; 
+
 
 import {
   BrowserRouter as Router,
@@ -112,9 +114,8 @@ function App() {
       <Navbar />
       <Routes> {/* <- Routesの閉じタグ */}
         <Route path="/" element={
-          <div>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-            <div style={{ width: '30%' }}>
+          <div style={{  justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+              <div style={{ width: '30%', marginRight: '20px' }}>
               <div>
                 <label>住所:</label>
                 <input
@@ -137,10 +138,8 @@ function App() {
                 経度: {lng ? lng.toFixed(6) : "N/A"}
               </div>
             </div>
-          </div>
 
-<div>
-<div style={{ flex: 1, marginRight: '50px' }}> {/* ここにマージンを追加 */}
+            <div className="App-map-container">
             <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}>
               <GoogleMap
                 mapContainerStyle={containerStyle}
@@ -153,8 +152,6 @@ function App() {
               </GoogleMap>
             </LoadScript>
             </div>
-</div>
-
           </div>
         } />
          
