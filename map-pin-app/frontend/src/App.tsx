@@ -17,6 +17,10 @@ const defaultPosition = {
 };
 
 function App() {
+  const mapContainerStyle = {
+    width: '100%',
+    height: '400px',
+  };
   const [address, setAddress] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [lat, setLat] = useState<number | null>(null);
@@ -139,7 +143,7 @@ function App() {
                   }
                 >
                   <GoogleMap
-                    className="App-map-style"
+                    mapContainerStyle={mapContainerStyle}
                     center={position}
                     zoom={13}
                     onLoad={handleMapLoad}
