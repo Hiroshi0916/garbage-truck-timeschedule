@@ -20,7 +20,6 @@ app.get("/geocode", async (req, res) => {
   const address = req.query.address;
   const postalCode = req.query.postalCode;
 
-  // ここでフロントエンドから送られてきた住所や郵便番号をログに表示します
   if (address) {
     console.log("Received address:", address);
   }
@@ -28,12 +27,13 @@ app.get("/geocode", async (req, res) => {
     console.log("Received postal code:", postalCode);
   }
 
+  const locationQuery = address || postalCode || "";
+
   const response = await fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${addressOrPostalCode}&key=${GOOGLE_MAPS_API_KEY}`
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${locationQuery}&key=${GOOGLE_MAPS_API_KEY}`
   );
   const data = await response.json();
 
-  // ここでGoogle Geocoding APIから取得したデータをログとして表示します
   console.log("Geocoding data:", data);
 
   res.json(data);
@@ -42,16 +42,14 @@ app.get("/geocode", async (req, res) => {
 app.get("/current-location", async (req, res) => {
   try {
     console.log("Received request for /current-location");
-    // Google Maps Geolocation APIを使用して現在地を取得します
-    const locationQuery = address || postalCode || "";
+
     const response = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${locationQuery}&key=${GOOGLE_MAPS_API_KEY}`,
-      {
-        method: "POST",
-      }
-    );
+        `https://www.googleapis.com/geolocation/v1/geolocate?key=${GOOGLE_MAPS_API_KEY}`,
+        {
+          method: "POST",
+        }
+      );
     const data = await response.json();
-    // ここでデータをログとして表示します
     console.log("Geocoding data:", data);
     res.json(data);
   } catch (error) {
