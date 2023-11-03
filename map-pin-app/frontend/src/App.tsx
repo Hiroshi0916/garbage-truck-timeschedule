@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import Navbar from "./Navbar";
-import './App.css'; 
+import "./App.css";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  useNavigate
+  useNavigate,
 } from "react-router-dom";
 import UserRegistration from "./UserRegistration";
 
@@ -17,7 +17,6 @@ const defaultPosition = {
 };
 
 function App() {
-
   const [address, setAddress] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [lat, setLat] = useState<number | null>(null);
@@ -26,8 +25,6 @@ function App() {
   const [position, setPosition] = useState<
     { lat: number; lng: number } | undefined
   >(defaultPosition);
-
-
 
   console.log(
     "Google Maps API Key:",
@@ -43,7 +40,7 @@ function App() {
           method: "GET", // GETリクエストでバックエンドに送信
         }
       );
-  
+
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -97,55 +94,62 @@ function App() {
     console.log("Map clicked at:", e.latLng.toString());
   };
 
-
   return (
     <Router>
       <Navbar />
-      <Routes> {/* <- Routesの閉じタグ */}
-        <Route path="/" element={
-          <div style={{  justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-              <div style={{ width: '30%', marginRight: '20px' }}>
-              <div>
-                <label>住所:</label>
-                <input
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <div className="App-layout">
+              <div className="App-search-container">
+                <div className="App-input-group">
+                  <label>住所:</label>
+                  <input
+                    className="App-input"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label>郵便番号:</label>
+                  <input
+                    value={postalCode}
+                    onChange={(e) => setPostalCode(e.target.value)}
+                  />
+                </div>
+                <button onClick={getCurrentLocation}>現在地を取得</button>
+                <button onClick={handleSearch}>検索</button>
+                <div>
+                  緯度: {lat ? lat.toFixed(6) : "N/A"}
+                  <br />
+                  経度: {lng ? lng.toFixed(6) : "N/A"}
+                </div>
               </div>
-              <div>
-                <label>郵便番号:</label>
-                <input
-                  value={postalCode}
-                  onChange={(e) => setPostalCode(e.target.value)}
-                />
-              </div>
-              <button onClick={getCurrentLocation}>現在地を取得</button>
-              <button onClick={handleSearch}>検索</button>
-              <div>
-                緯度: {lat ? lat.toFixed(6) : "N/A"}
-                <br />
-                経度: {lng ? lng.toFixed(6) : "N/A"}
-              </div>
-            </div>
 
-            <div className="App-map-container">
-            <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}>
-              <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={position}
-                zoom={13}
-                onLoad={handleMapLoad}
-                onClick={handleMapClick}
-              >
-                {position && <Marker position={position} />}
-              </GoogleMap>
-            </LoadScript>
+              <div className="App-map-container">
+                <LoadScript
+                  googleMapsApiKey={
+                    process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""
+                  }
+                >
+                  <GoogleMap
+                    mapContainerStyle={containerStyle}
+                    center={position}
+                    zoom={13}
+                    onLoad={handleMapLoad}
+                    onClick={handleMapClick}
+                  >
+                    {position && <Marker position={position} />}
+                  </GoogleMap>
+                </LoadScript>
+              </div>
             </div>
-          </div>
-        } />
-         
+          }
+        />
+
         <Route path="/user-registration" element={<UserRegistration />} />
-        </Routes> 
+      </Routes>
     </Router>
   );
 }
