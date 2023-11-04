@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import GoogleMapDisplay from "./GoogleMapDisplay";
 import './AdminPage.css';
+import axios from 'axios';
 
 
 type AddressInfo = {
@@ -24,6 +25,27 @@ const AdminPage = () => {
     localStorage.setItem("addresses", JSON.stringify(addresses));
   }, [addresses]);
 
+  const fetchGeocode = async (address:string, postalCode:string) => {
+    try {
+      // Encode the address and postalCode to be URL-safe
+      const encodedAddress = encodeURIComponent(address);
+      const encodedPostalCode = encodeURIComponent(postalCode);
+      
+      const response = await axios.get(`http://localhost:3001/geocode`, {
+        params: {
+          address: encodedAddress,
+          postalCode: encodedPostalCode
+        }
+      });
+      
+      const location = response.data.results[0].geometry.location;
+      console.log(`Latitude: ${location.lat}, Longitude: ${location.lng}`);
+
+    } catch (error) {
+      console.error("There was an error fetching the geocode:", error);
+    }
+  };
+  
   const addAddress = () => {
     const order = parseInt(currentOrder);
     if (currentAddress.trim() !== "") {
@@ -52,6 +74,7 @@ const AdminPage = () => {
       // ローカルストレージに保存
       localStorage.setItem("addresses", JSON.stringify(updatedAddresses));
     }
+    fetchGeocode(currentAddress, currentPostalCode);
   };
 
   const removeAddress = (orderToRemove: number) => {
