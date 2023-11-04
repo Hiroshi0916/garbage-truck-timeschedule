@@ -143,7 +143,12 @@ const UserRegistration = () => {
       </table>
       <div>
         <button onClick={handleRegister}>登録</button>
-        {/* Implement the edit button functionality if needed */}
+        <button
+            onClick={() => {/* Implement the onClick event for edit */}}
+            // disabled={editingId === null} // Disable the button if no user is selected for editing
+          >
+            編集
+          </button>
       </div>
     </div>
   );
