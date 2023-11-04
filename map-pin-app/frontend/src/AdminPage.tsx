@@ -48,15 +48,32 @@ const AdminPage = () => {
     }
   };
 
+  const removeAddress = (orderToRemove: number) => {
+    // 順番に基づいてアドレスを削除し、それ以降のアドレスの順番をデクリメントする
+    const updatedAddresses = addresses
+      .filter((addr) => addr.order !== orderToRemove)
+      .map((addr) => ({
+        ...addr,
+        order: addr.order > orderToRemove ? addr.order - 1 : addr.order,
+      }));
+
+    setAddresses(updatedAddresses);
+
+    // ローカルストレージを更新
+    localStorage.setItem("addresses", JSON.stringify(updatedAddresses));
+  };
+
   // 住所リストを表形式で表示する関数
   const renderAddressTable = () => {
     return (
       <table>
         <thead>
           <tr>
+            <th>順番</th>
             <th>登録住所</th>
             <th>緯度</th>
             <th>経度</th>
+            <th>操作</th>
           </tr>
         </thead>
         <tbody>
@@ -66,6 +83,9 @@ const AdminPage = () => {
               <td>{info.address}</td>
               <td>{info.latitude || "未設定"}</td>
               <td>{info.longitude || "未設定"}</td>
+              <td>
+                <button onClick={() => removeAddress(info.order)}>削除</button>
+              </td>
             </tr>
           ))}
         </tbody>
