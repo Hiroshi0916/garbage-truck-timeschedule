@@ -26,8 +26,10 @@ const AdminPage = () => {
 
   const addAddress = () => {
     const order = parseInt(currentOrder);
-    if (currentAddress.trim() !== "" && !isNaN(order)) {
-      // 既存の順番を更新
+    if (currentAddress.trim() !== "") {
+      // 新しいアドレス情報を追加する際、次の順番を自動的に設定
+      const newOrder = addresses.length > 0 ? addresses[addresses.length - 1].order + 1 : 1;
+  
       const updatedAddresses = addresses.map((addr) => ({
         ...addr,
         order: addr.order >= order ? addr.order + 1 : addr.order,
@@ -37,15 +39,15 @@ const AdminPage = () => {
       updatedAddresses.push({
         address: currentAddress,
         postalCode: currentPostalCode,
-        order,
+        order: newOrder, // 新しい順番を設定
       });
 
-      // 順番に従ってソート
-      updatedAddresses.sort((a, b) => a.order - b.order);
+    // 順番に従ってソート（追加時には不要かもしれませんが、一応入れておきます）
+    updatedAddresses.sort((a, b) => a.order - b.order);
 
       setAddresses(updatedAddresses);
       setCurrentAddress("");
-      setCurrentOrder("");
+      setCurrentPostalCode("");
 
       // ローカルストレージに保存
       localStorage.setItem("addresses", JSON.stringify(updatedAddresses));
@@ -102,12 +104,6 @@ const AdminPage = () => {
 
   return (
     <div>
-      <input
-        type="number"
-        value={currentOrder}
-        onChange={(e) => setCurrentOrder(e.target.value)}
-        placeholder="順番を入力"
-      />
       <input
         type="text"
         value={currentPostalCode}
