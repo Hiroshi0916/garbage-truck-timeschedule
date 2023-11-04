@@ -8,9 +8,11 @@ interface Errors {
 }
 
 interface User {
+  id: number;
   userName: string;
   postalCode: string;
   address: string;
+  isEditing: boolean;
 }
 
 const UserRegistration = () => {
@@ -19,6 +21,7 @@ const UserRegistration = () => {
   const [address, setAddress] = useState<string>("");
   const [errors, setErrors] = useState<Errors>({});
   const [users, setUsers] = useState<User[]>([]); // ユーザーリストの状態
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   // コンポーネントがマウントされた時にローカルストレージからデータを読み込む
   useEffect(() => {
@@ -54,51 +57,58 @@ const UserRegistration = () => {
     return formIsValid;
   };
 
+  const handleEdit = (id: number) => {
+    setEditingId(id);
+    const user = users.find((user) => user.id === id);
+    if (user) {
+      setUserName(user.userName);
+      setPostalCode(user.postalCode);
+      setAddress(user.address);
+    }
+  };
+
+  const handleSave = (id: number) => {
+    setUsers(
+      users.map((user) =>
+        user.id === id
+          ? { ...user, userName, postalCode, address, isEditing: false }
+          : user
+      )
+    );
+    resetForm();
+  };
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (validateForm()) {
-      const newUser: User = { userName, postalCode, address };
-      setUsers([...users, newUser]);
-      // フォームフィールドをクリアする
-      setUserName("");
-      setPostalCode("");
-      setAddress("");
+    if (editingId !== null) {
+      handleSave(editingId);
+    } else {
+      if (validateForm()) {
+        const newUser: User = {
+          id: Date.now(), // ユニークなIDを生成
+          userName,
+          postalCode,
+          address,
+          isEditing: false,
+        };
+        setUsers([...users, newUser]);
+        resetForm();
+      }
     }
+  };
+
+  const resetForm = () => {
+    setUserName("");
+    setPostalCode("");
+    setAddress("");
+    setEditingId(null);
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>ユーザー名:</label>
-          <input
-            type="text"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-          />
-          {errors.userName && <div className="error">{errors.userName}</div>}
-        </div>
-        <div>
-          <label>郵便番号:</label>
-          <input
-            type="text"
-            value={postalCode}
-            onChange={(e) => setPostalCode(e.target.value)}
-          />
-          {errors.postalCode && (
-            <div className="error">{errors.postalCode}</div>
-          )}
-        </div>
-        <div>
-          <label>住所:</label>
-          <input
-            type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-          {errors.address && <div className="error">{errors.address}</div>}
-        </div>
-        <button type="submit">登録</button>
+        {/* 略: フォームフィールドと送信/保存ボタン */}
+        <button type="submit">{editingId !== null ? "保存" : "登録"}</button>
       </form>
 
       {users.length > 0 && (
@@ -108,14 +118,52 @@ const UserRegistration = () => {
               <th>ユーザー名</th>
               <th>郵便番号</th>
               <th>住所</th>
+              <th>操作</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((user, index) => (
-              <tr key={index}>
-                <td>{user.userName}</td>
-                <td>{user.postalCode}</td>
-                <td>{user.address}</td>
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td>
+                  {user.isEditing ? (
+                    <input
+                      type="text"
+                      value={userName}
+                      onChange={(e) => setUserName(e.target.value)}
+                    />
+                  ) : (
+                    user.userName
+                  )}
+                </td>
+                <td>
+                  {user.isEditing ? (
+                    <input
+                      type="text"
+                      value={postalCode}
+                      onChange={(e) => setPostalCode(e.target.value)}
+                    />
+                  ) : (
+                    user.postalCode
+                  )}
+                </td>
+                <td>
+                  {user.isEditing ? (
+                    <input
+                      type="text"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                    />
+                  ) : (
+                    user.address
+                  )}
+                </td>
+                <td>
+                  {user.isEditing ? (
+                    <button onClick={() => handleSave(user.id)}>保存</button>
+                  ) : (
+                    <button onClick={() => handleEdit(user.id)}>編集</button>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
