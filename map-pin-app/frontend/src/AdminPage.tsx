@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import GoogleMapDisplay from "./GoogleMapDisplay";
+import './AdminPage.css';
+
 
 type AddressInfo = {
   address: string;
+  postalCode?: string;
   latitude?: number;
   longitude?: number;
   order: number;
@@ -13,6 +16,7 @@ const AdminPage = () => {
     JSON.parse(localStorage.getItem("addresses") || "[]")
   );
   const [currentAddress, setCurrentAddress] = useState("");
+  const [currentPostalCode, setCurrentPostalCode] = useState("");
   const [currentOrder, setCurrentOrder] = useState("");
 
   useEffect(() => {
@@ -32,7 +36,7 @@ const AdminPage = () => {
       // 新しいアドレス情報を追加
       updatedAddresses.push({
         address: currentAddress,
-        // 緯度と経度はAPIから取得
+        postalCode: currentPostalCode,
         order,
       });
 
@@ -66,20 +70,23 @@ const AdminPage = () => {
   // 住所リストを表形式で表示する関数
   const renderAddressTable = () => {
     return (
-      <table>
+      <table className="table">
         <thead>
           <tr>
             <th>順番</th>
+            <th>郵便番号</th>
             <th>登録住所</th>
             <th>緯度</th>
             <th>経度</th>
-            <th>操作</th>
+            <th>削除ボタン</th>
           </tr>
         </thead>
         <tbody>
           {addresses.map((info) => (
             <tr key={info.order}>
               <td>{info.order}</td>
+              <td>{info.postalCode || "未設定"}</td>{" "}
+              {/* 郵便番号のデータを表示 */}
               <td>{info.address}</td>
               <td>{info.latitude || "未設定"}</td>
               <td>{info.longitude || "未設定"}</td>
@@ -100,6 +107,12 @@ const AdminPage = () => {
         value={currentOrder}
         onChange={(e) => setCurrentOrder(e.target.value)}
         placeholder="順番を入力"
+      />
+      <input
+        type="text"
+        value={currentPostalCode}
+        onChange={(e) => setCurrentPostalCode(e.target.value)}
+        placeholder="郵便番号を入力"
       />
       <input
         type="text"
