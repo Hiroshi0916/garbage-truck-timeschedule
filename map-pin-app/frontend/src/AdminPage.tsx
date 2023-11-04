@@ -39,14 +39,16 @@ const AdminPage = () => {
       });
       
       const location = response.data.results[0].geometry.location;
-      console.log(`Latitude: ${location.lat}, Longitude: ${location.lng}`);
 
+      console.log(`Latitude: ${location.lat}, Longitude: ${location.lng}`);
+ // 緯度と経度を返す
+ return { latitude: location.lat, longitude: location.lng };
     } catch (error) {
       console.error("There was an error fetching the geocode:", error);
     }
   };
   
-  const addAddress = () => {
+  const addAddress = async () => {
     const order = parseInt(currentOrder);
     if (currentAddress.trim() !== "") {
       // 新しいアドレス情報を追加する際、次の順番を自動的に設定
@@ -57,12 +59,22 @@ const AdminPage = () => {
         order: addr.order >= order ? addr.order + 1 : addr.order,
       }));
 
-      // 新しいアドレス情報を追加
-      updatedAddresses.push({
-        address: currentAddress,
-        postalCode: currentPostalCode,
-        order: newOrder, // 新しい順番を設定
-      });
+
+      const geoData = await fetchGeocode(currentAddress, currentPostalCode);
+  if (!geoData) {
+    console.error('Failed to fetch geocode data');
+    return;
+  }
+
+
+  // 新しいアドレス情報を追加
+  updatedAddresses.push({
+    address: currentAddress,
+    postalCode: currentPostalCode,
+    latitude: geoData.latitude,
+    longitude: geoData.longitude,
+    order: newOrder,
+  });
 
     // 順番に従ってソート（追加時には不要かもしれませんが、一応入れておきます）
     updatedAddresses.sort((a, b) => a.order - b.order);
