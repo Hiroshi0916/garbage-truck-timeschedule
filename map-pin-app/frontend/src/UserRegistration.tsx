@@ -10,9 +10,10 @@ interface Errors {
 interface User {
   id: number;
   userName: string;
-  postalCode?: string; // Make postalCode optional
+  postalCode?: string;
   address: string;
-  isEditing?: boolean; // Make isEditing optional
+  email?: string;
+  isEditing?: boolean;
 }
 
 const UserRegistration = () => {
@@ -53,33 +54,41 @@ const UserRegistration = () => {
     }
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault(); // Prevent the default form submit behavior
-    if (validateForm()) {
-      handleRegister();
+  const handleSave = () => {
+    if (editingId !== null && validateForm()) {
+      setUsers(
+        users.map((user) => {
+          if (user.id === editingId) {
+            return {
+              ...user,
+              userName: newUserName,
+              address: newAddress,
+              email: newUserEmail, // Set isEditing flag to false after saving
+            };
+          }
+          return user;
+        })
+      );
+      // Reset the form and editing state
+      setEditingId(null);
+      setNewUserName("");
+      setNewAddress("");
+      // setNewUserEmail("");
+      setErrors({});
     }
   };
 
   const handleEdit = (id: number) => {
-    const user = users.find((user) => user.id === id);
+    const user = users.find((u) => u.id === id);
     if (user) {
       setEditingId(id);
       setNewUserName(user.userName);
       setNewAddress(user.address);
+      // Set the email if you're using it
+      // setNewUserEmail(user.email);
+      // Set isEditing flag to true for the editing user
+      setUsers(users.map((u) => (u.id === id ? { ...u, isEditing: true } : u)));
     }
-  };
-
-  const handleSave = (id: number) => {
-    setUsers(
-      users.map((user) =>
-        user.id === id
-          ? { ...user, userName: newUserName, address: newAddress }
-          : user
-      )
-    );
-    setEditingId(null);
-    setNewUserName("");
-    setNewAddress("");
   };
 
   const validateForm = () => {
@@ -119,15 +128,16 @@ const UserRegistration = () => {
               </td>
             </tr>
             <tr>
-              <th>ユーザーアドレス</th>
-              <td>
-                <input
-                  type="text"
-                  // Update the state accordingly if you have a newUserEmail state
-                  placeholder="ユーザーアドレス"
-                />
-                {/* Implement error display for newUserEmail if applicable */}
-              </td>
+            <th>ユーザーアドレス</th>
+  <td>
+    <input
+      type="text"
+      value={newUserEmail}
+      onChange={(e) => setNewUserEmail(e.target.value)}
+      placeholder="ユーザーアドレス"
+    />
+    {/* Implement error display for newUserEmail if applicable */}
+  </td>
             </tr>
             <tr>
               <th>居住地</th>
@@ -148,18 +158,32 @@ const UserRegistration = () => {
       </div>
 
       <div className="button-container">
-        <button onClick={handleRegister}>登録</button>
-        <button
-          onClick={() => {
-            /* Implement the onClick event for edit */
-          }}
-          // disabled={editingId === null} // If you want to disable the edit button when no user is selected for editing
-        >
-          編集
-        </button>
+        {/* Conditionally render the buttons based on whether editingId is not null */}
+        {editingId === null ? (
+          // Show this button only when not editing
+          <button onClick={handleRegister}>登録</button>
+        ) : (
+          // Show this button only when editing
+          <button onClick={handleSave}>編集</button>
+        )}
+        {/* Render edit buttons next to each user row instead */}
       </div>
+
+      {users.map((user) => (
+  <div key={user.id} className="user-item">
+    <span>
+      {user.userName} - {user.address} {user.email && `- ${user.email}`}
+    </span>
+    {editingId === user.id ? (
+      <button onClick={handleSave}>保存</button>
+    ) : (
+      <button onClick={() => handleEdit(user.id)}>編集</button>
+    )}
+  </div>
+))}
     </div>
   );
 };
+
 
 export default UserRegistration;
