@@ -102,16 +102,10 @@ const UserRegistration = () => {
 
   return (
     <div>
-      <table>
-        <thead>
-          <tr>
-            <th>ユーザー名</th>
-            <th>ユーザーアドレス</th>
-            <th>居住地</th>
-          </tr>
-        </thead>
+      <table className="table">
         <tbody>
           <tr>
+            <th>ユーザー名</th>
             <td>
               <input
                 type="text"
@@ -121,15 +115,20 @@ const UserRegistration = () => {
               />
               {errors.userName && <div className="error">{errors.userName}</div>}
             </td>
+          </tr>
+          <tr>
+            <th>ユーザーアドレス</th>
             <td>
               <input
-                type="email"
-                value={newUserEmail}
-                onChange={(e) => setNewUserEmail(e.target.value)}
+                type="text"
+                // Update the state accordingly if you have a newUserEmail state
                 placeholder="ユーザーアドレス"
               />
-              {/* You will need to add error handling for this new field */}
+              {/* Implement error display for newUserEmail if applicable */}
             </td>
+          </tr>
+          <tr>
+            <th>居住地</th>
             <td>
               <input
                 type="text"
@@ -142,8 +141,10 @@ const UserRegistration = () => {
           </tr>
         </tbody>
       </table>
-      <button onClick={handleRegister}>登録</button>
-      {/* Implement the edit button functionality if needed */}
+      <div>
+        <button onClick={handleRegister}>登録</button>
+        {/* Implement the edit button functionality if needed */}
+      </div>
     </div>
   );
 };
