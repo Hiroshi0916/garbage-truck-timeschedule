@@ -33,8 +33,14 @@
     cursor: pointer;
   }
   
-  /* Show the modal when it's set to display:block */
-  .modal {
-    display: block; 
+  .table-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px; /* ボタンとの間に適切なスペースを確保 */
   }
   
+  .button-container {
+    display: flex;
+    justify-content: center;
+    gap: 5%; /* ボタン間の間隔を5%に設定 */
+  }

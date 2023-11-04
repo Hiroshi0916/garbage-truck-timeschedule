@@ -10,11 +10,10 @@ interface Errors {
 interface User {
   id: number;
   userName: string;
-  postalCode?: string;  // Make postalCode optional
+  postalCode?: string; // Make postalCode optional
   address: string;
-  isEditing?: boolean;  // Make isEditing optional
+  isEditing?: boolean; // Make isEditing optional
 }
-
 
 const UserRegistration = () => {
   const [newUserName, setNewUserName] = useState<string>("");
@@ -47,9 +46,9 @@ const UserRegistration = () => {
       };
       setUsers([...users, newUser]);
       // Clear the form fields
-      setNewUserName('');
-      setNewAddress('');
-      setNewUserEmail(''); // Clear userEmail if state hook is added
+      setNewUserName("");
+      setNewAddress("");
+      setNewUserEmail(""); // Clear userEmail if state hook is added
       setErrors({});
     }
   };
@@ -102,53 +101,62 @@ const UserRegistration = () => {
 
   return (
     <div>
-      <table className="table">
-        <tbody>
-          <tr>
-            <th>ユーザー名</th>
-            <td>
-              <input
-                type="text"
-                value={newUserName}
-                onChange={(e) => setNewUserName(e.target.value)}
-                placeholder="ユーザー名"
-              />
-              {errors.userName && <div className="error">{errors.userName}</div>}
-            </td>
-          </tr>
-          <tr>
-            <th>ユーザーアドレス</th>
-            <td>
-              <input
-                type="text"
-                // Update the state accordingly if you have a newUserEmail state
-                placeholder="ユーザーアドレス"
-              />
-              {/* Implement error display for newUserEmail if applicable */}
-            </td>
-          </tr>
-          <tr>
-            <th>居住地</th>
-            <td>
-              <input
-                type="text"
-                value={newAddress}
-                onChange={(e) => setNewAddress(e.target.value)}
-                placeholder="居住地"
-              />
-              {errors.address && <div className="error">{errors.address}</div>}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div>
+      <div className="table-container">
+        <table className="table">
+          <tbody>
+            <tr>
+              <th>ユーザー名</th>
+              <td>
+                <input
+                  type="text"
+                  value={newUserName}
+                  onChange={(e) => setNewUserName(e.target.value)}
+                  placeholder="ユーザー名"
+                />
+                {errors.userName && (
+                  <div className="error">{errors.userName}</div>
+                )}
+              </td>
+            </tr>
+            <tr>
+              <th>ユーザーアドレス</th>
+              <td>
+                <input
+                  type="text"
+                  // Update the state accordingly if you have a newUserEmail state
+                  placeholder="ユーザーアドレス"
+                />
+                {/* Implement error display for newUserEmail if applicable */}
+              </td>
+            </tr>
+            <tr>
+              <th>居住地</th>
+              <td>
+                <input
+                  type="text"
+                  value={newAddress}
+                  onChange={(e) => setNewAddress(e.target.value)}
+                  placeholder="居住地"
+                />
+                {errors.address && (
+                  <div className="error">{errors.address}</div>
+                )}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div className="button-container">
         <button onClick={handleRegister}>登録</button>
         <button
-            onClick={() => {/* Implement the onClick event for edit */}}
-            // disabled={editingId === null} // Disable the button if no user is selected for editing
-          >
-            編集
-          </button>
+          onClick={() => {
+            /* Implement the onClick event for edit */
+          }}
+          // disabled={editingId === null} // If you want to disable the edit button when no user is selected for editing
+        >
+          編集
+        </button>
       </div>
     </div>
   );
