@@ -5,18 +5,38 @@
   width: 100%;
 }
 
+.table-container .table {
+  width: 100%; /* Make the table full width to work with percentages properly */
+  border-collapse: collapse; /* Collapse borders to remove any default spacing */
+}
+.table-container .table td {
+  height: 100%; /* Ensure the table cell takes up full height */
+  padding: 0; /* Remove padding if you want the input to fit exactly */
+}
+
+.table {
+  text-align: center;
+  vertical-align: middle;
+}
+
+
+.input-no-border {
+  border: none;
+  outline: none;
+  width: 80%;
+  height: 100%;
+  padding: 0.5em;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.input-no-border:focus {
+  background-color: #f0f0f0;
+}
+
 .button-container {
   display: flex;
   justify-content: center; 
   gap: 10px; 
   margin-top: 20px;
-}
-
-.input-no-border {
-  border: none;
-  outline: none;
-}
-
-.input-no-border:focus {
-  background-color: #f0f0f0;
 }
