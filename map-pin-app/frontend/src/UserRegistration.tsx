@@ -46,7 +46,7 @@ const UserRegistration = () => {
     return Object.keys(tempErrors).length === 0;
   };
 
-  const addUser = () => {
+  const addUser = (userId: number) => {
     if (validate()) {
       const newUser = {
         id: users.length + 1, // ID生成はサーバー側で行うべきですが、ここでは仮の処理としています。
@@ -63,6 +63,16 @@ const UserRegistration = () => {
       // setNewAddress('');
       // setNewUserEmail('');
     }
+  };
+
+  const toggleEdit = (userId: number) => {
+    setUsers(users.map(user => {
+      if (user.id === userId) {
+        // 編集中のユーザーがあれば、編集状態を反転させる
+        return { ...user, isEditing: !user.isEditing };
+      }
+      return user;
+    }));
   };
 
   return (
@@ -119,9 +129,22 @@ const UserRegistration = () => {
       </div>
 
       <div className="button-container">
+        {users.map((user) =>
+          user.isEditing ? (
+            // 編集保存ボタン
+            <button onClick={() => addUser(user.id)}>保存</button>
+          ) : (
+            // 通常の編集ボタン
+            <button onClick={() => toggleEdit(user.id)}>編集</button>
+          )
+        )}
+      </div>
+
+
+      {/* <div className="button-container">
       <button onClick={addUser}>登録</button>
         <button>編集</button>
-      </div>
+      </div> */}
     </div>
   );
 };
