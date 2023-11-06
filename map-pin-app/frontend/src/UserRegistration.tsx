@@ -20,10 +20,9 @@ interface User {
 const UserRegistration = () => {
   const [newUserName, setNewUserName] = useState<string>("");
   const [newAddress, setNewAddress] = useState<string>("");
+  const [newUserEmail, setNewUserEmail] = useState<string>("");
   const [users, setUsers] = useState<User[]>([]);
   const [errors, setErrors] = useState<Errors>({});
-
-  const [newUserEmail, setNewUserEmail] = useState<string>("");
 
   useEffect(() => {
     const storedUsers = localStorage.getItem("users");
@@ -36,6 +35,35 @@ const UserRegistration = () => {
   useEffect(() => {
     localStorage.setItem("users", JSON.stringify(users));
   }, [users]);
+
+  const validate = () => {
+    let tempErrors: Errors = {};
+    if (!newUserName) tempErrors.userName = "ユーザー名を入力してください。";
+    if (!newUserEmail) tempErrors.email = "メールアドレスを入力してください。";
+    if (!newAddress) tempErrors.address = "住所を入力してください。";
+
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
+
+  const addUser = () => {
+    if (validate()) {
+      const newUser = {
+        id: users.length + 1, // ID生成はサーバー側で行うべきですが、ここでは仮の処理としています。
+        userName: newUserName,
+        address: newAddress,
+        email: newUserEmail,
+        isEditing: false,
+      };
+
+      setUsers([...users, newUser]);
+
+      // フォームをクリアしたくない場合は、以下の行をコメントアウトします
+      // setNewUserName('');
+      // setNewAddress('');
+      // setNewUserEmail('');
+    }
+  };
 
   return (
     <div>
@@ -91,7 +119,7 @@ const UserRegistration = () => {
       </div>
 
       <div className="button-container">
-        <button>登録</button>
+      <button onClick={addUser}>登録</button>
         <button>編集</button>
       </div>
     </div>
