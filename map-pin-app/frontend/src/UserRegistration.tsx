@@ -46,16 +46,15 @@ const UserRegistration = () => {
     return Object.keys(tempErrors).length === 0;
   };
 
-  const addUser = (userId: number) => {
+  const addUser = () => {
     if (validate()) {
       const newUser = {
-        id: users.length + 1, // ID生成はサーバー側で行うべきですが、ここでは仮の処理としています。
+        id: Math.max(0, ...users.map(u => u.id)) + 1, // 一意のIDを生成
         userName: newUserName,
         address: newAddress,
         email: newUserEmail,
         isEditing: false,
       };
-
       setUsers([...users, newUser]);
 
       // フォームをクリアしたくない場合は、以下の行をコメントアウトします
@@ -74,6 +73,25 @@ const UserRegistration = () => {
       return user;
     }));
   };
+
+    // 編集されたユーザーを保存する関数
+    const saveEdit = (userId: number) => {
+      const updatedUsers = users.map(user => {
+        if (user.id === userId) {
+          return {
+            ...user,
+            userName: newUserName,
+            address: newAddress,
+            email: newUserEmail,
+            isEditing: false,
+          };
+        }
+        return user;
+      });
+      setUsers(updatedUsers);
+      // ...フォームクリアのコード...
+    };
+
 
   return (
     <div>
@@ -132,7 +150,7 @@ const UserRegistration = () => {
         {users.map((user) =>
           user.isEditing ? (
             // 編集保存ボタン
-            <button onClick={() => addUser(user.id)}>保存</button>
+             <button onClick={() => saveEdit(user.id)}>保存</button>
           ) : (
             // 通常の編集ボタン
             <button onClick={() => toggleEdit(user.id)}>編集</button>
