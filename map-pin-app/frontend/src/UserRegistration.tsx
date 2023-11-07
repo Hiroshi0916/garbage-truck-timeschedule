@@ -92,7 +92,6 @@ const UserRegistration = () => {
       // ...フォームクリアのコード...
     };
 
-
   return (
     <div>
       <div className="table-container">
