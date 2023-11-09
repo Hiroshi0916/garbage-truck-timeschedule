@@ -1,6 +1,7 @@
 import React from 'react';
 import useGoogleMapsAPI from './useGoogleMapsAPI';
 
+
 const GoogleMapDisplay = ({ addresses }: { addresses: string[] }) => {
   const isGoogleMapsLoaded = useGoogleMapsAPI('YOUR_GOOGLE_MAPS_API_KEY');
 
