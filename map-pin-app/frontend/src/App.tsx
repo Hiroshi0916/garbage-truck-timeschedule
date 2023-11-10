@@ -45,10 +45,11 @@ function App() {
 
 
   useEffect(() => {
-    // localStorage からアドレスデータを読み込む
     const savedAddresses = JSON.parse(localStorage.getItem("addresses") || "[]");
+    console.log("Loaded addresses from localStorage:", savedAddresses);
     setMarkers(savedAddresses);
   }, []);
+  
 
 
   const handleSearch = async () => {
@@ -117,8 +118,7 @@ function App() {
 
   // マーカーをレンダリングする関数
   const renderMarkers = () => {
-    console.log("Rendering markers:", markers); // デバッグ情報を出力
-    
+    console.log("Rendering markers:", markers);
     return markers.map((marker, index) => (
       <Marker key={index} position={{ lat: marker.latitude, lng: marker.longitude }} />
     ));
