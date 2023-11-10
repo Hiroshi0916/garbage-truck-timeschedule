@@ -15,9 +15,16 @@ import UserProfile from "./UserProfile";
 import UserEditForm from "./UserEditForm";
 
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
+
 const defaultPosition = {
   lat: 35.681236,
   lng: 139.767125,
+};
+
+// Markerの型定義（TypeScriptの場合）
+type MarkerType = {
+  latitude: number;
+  longitude: number;
 };
 
 function App() {
@@ -122,7 +129,7 @@ function App() {
           )
         ));
       };
-      
+
   return (
     <LoadScript
     googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}
