@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { User } from "./models/User";
+import { formFieldStyle, labelStyle, inputStyle, buttonStyle } from './formStyles';
 
 
 // ローカルストレージからユーザーデータを取得する関数
@@ -41,7 +42,7 @@ const fetchUserDataFromLocalStorage = (): User => {
             <button type="submit" style={buttonStyle}>保存</button>
           </form>
         </div>
-      );
+    );
     };
   
     export default UserEditForm;

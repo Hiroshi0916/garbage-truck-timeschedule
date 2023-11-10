@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { User } from './models/User'; 
 
+
 const UserForm: React.FC = () => {
   const [user, setUser] = useState<User>({ username: '', address: '', residence: '' });
   const [isRegistered, setIsRegistered] = useState<boolean>(false);
