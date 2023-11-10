@@ -24,25 +24,23 @@ const fetchUserDataFromLocalStorage = (): User => {
   
     return (
         <div>
-        <h1>ユーザー情報の編集</h1>
-
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>ユーザー名:</label>
-            <input type="text" name="username" value={user.username} onChange={handleChange} />
-          </div>
-          <div>
-            <label>ユーザーアドレス:</label>
-            <input type="text" name="address" value={user.address} onChange={handleChange} />
-          </div>
-          <div>
-            <label>居住地:</label>
-            <input type="text" name="residence" value={user.residence} onChange={handleChange} />
-          </div>
-          <button type="submit">保存</button>
-        </form>
+          <h1>ユーザー情報の編集</h1>
+          <form onSubmit={handleSubmit} style={{ margin: '20px 0' }}>
+            <div style={formFieldStyle}>
+              <label style={labelStyle}>ユーザー名:</label>
+              <input type="text" name="username" value={user.username} onChange={handleChange} style={inputStyle} />
+            </div>
+            <div style={formFieldStyle}>
+              <label style={labelStyle}>ユーザーアドレス:</label>
+              <input type="text" name="address" value={user.address} onChange={handleChange} style={inputStyle} />
+            </div>
+            <div style={formFieldStyle}>
+              <label style={labelStyle}>居住地:</label>
+              <input type="text" name="residence" value={user.residence} onChange={handleChange} style={inputStyle} />
+            </div>
+            <button type="submit" style={buttonStyle}>保存</button>
+          </form>
         </div>
-
       );
     };
   
