@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { User } from './models/User';  // 正しいパスに調整
 
 const UserForm: React.FC = () => {
   const [user, setUser] = useState<User>({ username: '', address: '', residence: '' });
+  const [isRegistered, setIsRegistered] = useState<boolean>(false);
+  const [isAlreadyRegistered, setIsAlreadyRegistered] = useState<boolean>(false);
+
+  useEffect(() => {
+    // ローカルストレージにデータがあるか確認
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      setIsAlreadyRegistered(true);
+    }
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [e.target.name]: e.target.value });
