@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+
 import Navbar from "./Navbar";
 import "./App.css";
 import {
@@ -102,6 +103,9 @@ function App() {
   };
 
   return (
+    <LoadScript
+    googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}
+  >
     <Router>
       <Navbar />
       <Routes>
@@ -140,11 +144,6 @@ function App() {
               </div>
 
               <div className="App-map-container">
-                <LoadScript
-                  googleMapsApiKey={
-                    process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""
-                  }
-                >
                   <GoogleMap
                     mapContainerStyle={mapContainerStyle}
                     center={position}
@@ -154,7 +153,6 @@ function App() {
                   >
                     {position && <Marker position={position} />}
                   </GoogleMap>
-                </LoadScript>
               </div>
             </div>
           }
@@ -166,6 +164,7 @@ function App() {
         <Route path="/user/edit" element={<UserEditForm/>}/>
       </Routes>
     </Router>
+    </LoadScript>
   );
 }
 
