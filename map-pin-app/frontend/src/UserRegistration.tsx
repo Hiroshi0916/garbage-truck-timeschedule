@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { User } from './models/User';  // 正しいパスに調整
+import { User } from './models/User'; 
 
 const UserForm: React.FC = () => {
   const [user, setUser] = useState<User>({ username: '', address: '', residence: '' });
@@ -22,11 +22,16 @@ const UserForm: React.FC = () => {
     e.preventDefault();
     // ローカルストレージにユーザー情報を保存
     localStorage.setItem('userData', JSON.stringify(user));
+    setIsRegistered(true);
     console.log('Saved to localStorage:', user);
   };
 
 
   return (
+    <div>
+      {isAlreadyRegistered ? (
+        <p>すでに登録されています。</p>
+      ) : (
     <form onSubmit={handleSubmit}>
       <div>
         <label>ユーザー名:</label>
@@ -42,6 +47,9 @@ const UserForm: React.FC = () => {
       </div>
       <button type="submit">登録</button>
     </form>
+      )}
+            {isRegistered && <p>登録が完了しました。</p>}
+    </div>
   );
 };
 
