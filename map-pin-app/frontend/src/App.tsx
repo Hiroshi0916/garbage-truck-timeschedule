@@ -40,7 +40,8 @@ function App() {
   const [position, setPosition] = useState<
     { lat: number; lng: number } | undefined
   >(defaultPosition);
-  const [markers, setMarkers] = useState([]);
+
+  const [markers, setMarkers] = useState<MarkerType[]>([]);
 
 
   useEffect(() => {
@@ -49,10 +50,6 @@ function App() {
     setMarkers(savedAddresses);
   }, []);
 
-  console.log(
-    "Google Maps API Key:",
-    process.env.REACT_APP_GOOGLE_MAPS_API_KEY
-  );
 
   const handleSearch = async () => {
     console.log("Sending address:", address);
@@ -84,7 +81,6 @@ function App() {
     }
   };
 
-  // 現在地を取得する関数
   const getCurrentLocation = useCallback(async () => {
     try {
       const response = await fetch("/current-location");
@@ -107,6 +103,7 @@ function App() {
     }
   }, []);
 
+   // マップ読み込み時の処理
   const handleMapLoad = (map: any) => {
     console.log("Position:", position);
 
@@ -118,17 +115,12 @@ function App() {
   };
 
 
-      // Google Maps にピンを表示する関数
-      const renderMarkers = () => {
-        return markers.map((marker, index) => (
-          marker.latitude && marker.longitude && (
-            <Marker
-              key={index}
-              position={{ lat: marker.latitude, lng: marker.longitude }}
-            />
-          )
-        ));
-      };
+  // マーカーをレンダリングする関数
+  const renderMarkers = () => {
+    return markers.map((marker, index) => (
+      <Marker key={index} position={{ lat: marker.latitude, lng: marker.longitude }} />
+    ));
+  };
 
   return (
     <LoadScript
@@ -179,7 +171,7 @@ function App() {
                     onLoad={handleMapLoad}
                     onClick={handleMapClick}
                   >
-                    {position && <Marker position={position} />}
+                 {renderMarkers()}
                   </GoogleMap>
               </div>
             </div>
