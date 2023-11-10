@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 import Navbar from "./Navbar";
@@ -33,6 +33,14 @@ function App() {
   const [position, setPosition] = useState<
     { lat: number; lng: number } | undefined
   >(defaultPosition);
+  const [markers, setMarkers] = useState([]);
+
+
+  useEffect(() => {
+    // localStorage からアドレスデータを読み込む
+    const savedAddresses = JSON.parse(localStorage.getItem("addresses") || "[]");
+    setMarkers(savedAddresses);
+  }, []);
 
   console.log(
     "Google Maps API Key:",
