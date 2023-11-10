@@ -23,6 +23,9 @@ const fetchUserDataFromLocalStorage = (): User => {
     };
   
     return (
+        <div>
+        <h1>ユーザー情報の編集</h1>
+
         <form onSubmit={handleSubmit}>
           <div>
             <label>ユーザー名:</label>
@@ -38,6 +41,8 @@ const fetchUserDataFromLocalStorage = (): User => {
           </div>
           <button type="submit">保存</button>
         </form>
+        </div>
+
       );
     };
   
