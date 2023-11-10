@@ -16,6 +16,7 @@ const fetchUserDataFromLocalStorage = (): User | null => {
 
 const UserProfile: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   useEffect(() => {
     // APIを呼び出してユーザーデータを取得
@@ -30,9 +31,46 @@ const UserProfile: React.FC = () => {
     }
   }, []);
 
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (user) {
+      setUser({ ...user, [e.target.name]: e.target.value });
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    localStorage.setItem('userData', JSON.stringify(user));
+    setIsEditing(false); // 編集モードを終了
+  };
+
   if (!user) {
     return <div>データを読み込み中...</div>;
   }
+
+  if (isEditing) {
+    return (
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>ユーザー名:</label>
+          <input type="text" name="username" value={user.username} onChange={handleChange} />
+        </div>
+        <div>
+          <label>ユーザーアドレス:</label>
+          <input type="text" name="address" value={user.address} onChange={handleChange} />
+        </div>
+        <div>
+          <label>居住地:</label>
+          <input type="text" name="residence" value={user.residence} onChange={handleChange} />
+        </div>
+        <button type="submit">保存</button>
+      </form>
+    );
+  }
+
 
   return (
     <div>
@@ -40,7 +78,7 @@ const UserProfile: React.FC = () => {
       <p>ユーザー名: {user.username}</p>
       <p>アドレス: {user.address}</p>
       <p>居住地: {user.residence}</p>
-      {/* 編集リンクやボタンを配置 */}
+        <button onClick={handleEdit}>編集</button>
     </div>
   );
 };
