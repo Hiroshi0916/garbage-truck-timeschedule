@@ -10,6 +10,8 @@ import {
 } from "react-router-dom";
 import UserRegistration from "./UserRegistration";
 import AdminPage from "./AdminPage";
+import UserProfile from "./UserProfile"; 
+import UserEditForm from "./UserEditForm";
 
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 const defaultPosition = {
