@@ -160,6 +160,7 @@ function App() {
           }
         />
 
+
         <Route path="/user-registration" element={<UserRegistration />} />
         <Route path="/admin" element={<AdminPage />} /> 
         <Route path="/user/profile" element={<UserProfile/>}/> 
