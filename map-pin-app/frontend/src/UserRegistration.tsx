@@ -10,9 +10,11 @@ const UserForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // ここでユーザー情報を処理（例: データベースに保存）
-    console.log(user);
+    // ローカルストレージにユーザー情報を保存
+    localStorage.setItem('userData', JSON.stringify(user));
+    console.log('Saved to localStorage:', user);
   };
+
 
   return (
     <form onSubmit={handleSubmit}>
