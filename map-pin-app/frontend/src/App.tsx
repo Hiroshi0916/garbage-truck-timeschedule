@@ -110,6 +110,19 @@ function App() {
     console.log("Map clicked at:", e.latLng.toString());
   };
 
+
+      // Google Maps にピンを表示する関数
+      const renderMarkers = () => {
+        return markers.map((marker, index) => (
+          marker.latitude && marker.longitude && (
+            <Marker
+              key={index}
+              position={{ lat: marker.latitude, lng: marker.longitude }}
+            />
+          )
+        ));
+      };
+      
   return (
     <LoadScript
     googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}
