@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { User } from "./models/User";
 import { formFieldStyle, labelStyle, inputStyle, buttonStyle } from './formStyles';
 

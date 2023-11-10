@@ -35,11 +35,11 @@ const UserProfile: React.FC = () => {
     setIsEditing(true);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (user) {
-      setUser({ ...user, [e.target.name]: e.target.value });
-    }
-  };
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (user) {
+  //     setUser({ ...user, [e.target.name]: e.target.value });
+  //   }
+  // };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

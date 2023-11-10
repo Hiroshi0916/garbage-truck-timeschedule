@@ -7,7 +7,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  useNavigate,
+
 } from "react-router-dom";
 import UserRegistration from "./UserRegistration";
 import AdminPage from "./AdminPage";
@@ -117,6 +117,8 @@ function App() {
 
   // マーカーをレンダリングする関数
   const renderMarkers = () => {
+    console.log("Rendering markers:", markers); // デバッグ情報を出力
+    
     return markers.map((marker, index) => (
       <Marker key={index} position={{ lat: marker.latitude, lng: marker.longitude }} />
     ));

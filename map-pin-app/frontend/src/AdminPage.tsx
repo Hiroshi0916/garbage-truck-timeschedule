@@ -17,7 +17,7 @@ const AdminPage = () => {
   );
   const [currentAddress, setCurrentAddress] = useState("");
   const [currentPostalCode, setCurrentPostalCode] = useState("");
-  const [currentOrder, setCurrentOrder] = useState("");
+  const [currentOrder] = useState("");
 
   useEffect(() => {
     // アドレスリストが更新されたらローカルストレージに保存する
