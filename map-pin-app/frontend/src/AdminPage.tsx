@@ -122,7 +122,7 @@ const AdminPage = () => {
           {addresses.map((info) => (
             <tr key={info.order}>
               <td>{info.order}</td>
-              <td>{info.postalCode || "未設定"}</td>{" "}
+              <td>{info.postalCode || "未設定"}</td>
               {/* 郵便番号のデータを表示 */}
               <td>{info.address}</td>
               <td>{info.latitude || "未設定"}</td>
