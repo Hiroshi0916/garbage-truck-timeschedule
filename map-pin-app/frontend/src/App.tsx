@@ -27,6 +27,12 @@ type MarkerType = {
   longitude: number;
 };
 
+// AddressInfo 型の定義
+type AddressInfo = {
+  latitude: number;
+  longitude: number;
+};
+
 function App() {
   const mapContainerStyle = {
     width: "100%",
@@ -45,8 +51,17 @@ function App() {
 
 
   useEffect(() => {
-    const savedAddresses = JSON.parse(localStorage.getItem("addresses") || "[]");
+// localStorage からアドレスデータを読み込む
+const savedAddresses = JSON.parse(localStorage.getItem("addresses") || "[]");
+
+
+    // 読み込まれた緯度と経度の情報をコンソールに表示
     console.log("Loaded addresses from localStorage:", savedAddresses);
+    savedAddresses.forEach((address: AddressInfo, index: number) => {
+      console.log("TEST");
+      console.log(`Address ${index}: Latitude - ${address.latitude}, Longitude - ${address.longitude}`);
+    });
+
     setMarkers(savedAddresses);
   }, []);
   
