@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import GoogleMapDisplay from "./GoogleMapDisplay";
 import './AdminPage.css';
 import axios from 'axios';
 
@@ -153,7 +152,6 @@ const AdminPage = () => {
       />
       <button onClick={addAddress}>住所を追加</button>
       {renderAddressTable()}
-      <GoogleMapDisplay addresses={addresses.map((info) => info.address)} />
     </div>
   );
 };
