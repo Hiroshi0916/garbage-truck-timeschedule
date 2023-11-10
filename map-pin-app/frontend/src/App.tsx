@@ -160,6 +160,8 @@ function App() {
 
         <Route path="/user-registration" element={<UserRegistration />} />
         <Route path="/admin" element={<AdminPage />} /> 
+        <Route path="/user/profile" component={UserProfile} />
+        <Route path="/user/edit" component={UserEditForm} />
       </Routes>
     </Router>
   );
