@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import React, { useCallback,  useState } from "react";
+import { GoogleMap, LoadScript} from "@react-google-maps/api";
 
 import Navbar from "./Navbar";
 import "./App.css";
@@ -21,17 +21,6 @@ const defaultPosition = {
   lng: 139.767125,
 };
 
-// Markerの型定義（TypeScriptの場合）
-type MarkerType = {
-  latitude: number;
-  longitude: number;
-};
-
-// AddressInfo 型の定義
-type AddressInfo = {
-  latitude: number;
-  longitude: number;
-};
 
 function App() {
   const mapContainerStyle = {
@@ -46,26 +35,6 @@ function App() {
   const [position, setPosition] = useState<
     { lat: number; lng: number } | undefined
   >(defaultPosition);
-
-  const [markers, setMarkers] = useState<MarkerType[]>([]);
-
-
-  useEffect(() => {
-// localStorage からアドレスデータを読み込む
-const savedAddresses = JSON.parse(localStorage.getItem("addresses") || "[]");
-
-
-    // 読み込まれた緯度と経度の情報をコンソールに表示
-    console.log("Loaded addresses from localStorage:", savedAddresses);
-    savedAddresses.forEach((address: AddressInfo, index: number) => {
-      console.log("TEST");
-      console.log(`Address ${index}: Latitude - ${address.latitude}, Longitude - ${address.longitude}`);
-    });
-
-    setMarkers(savedAddresses);
-  }, []);
-  
-
 
   const handleSearch = async () => {
     console.log("Sending address:", address);
@@ -130,15 +99,6 @@ const savedAddresses = JSON.parse(localStorage.getItem("addresses") || "[]");
     console.log("Map clicked at:", e.latLng.toString());
   };
 
-
-  // マーカーをレンダリングする関数
-  const renderMarkers = () => {
-    console.log("Rendering markers:", markers);
-    return markers.map((marker, index) => (
-      <Marker key={index} position={{ lat: marker.latitude, lng: marker.longitude }} />
-    ));
-  };
-
   return (
     <LoadScript
     googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}
@@ -188,7 +148,6 @@ const savedAddresses = JSON.parse(localStorage.getItem("addresses") || "[]");
                     onLoad={handleMapLoad}
                     onClick={handleMapClick}
                   >
-                 {renderMarkers()}
                   </GoogleMap>
               </div>
             </div>
