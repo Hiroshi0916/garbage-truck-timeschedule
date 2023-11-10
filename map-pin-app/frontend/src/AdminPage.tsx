@@ -4,6 +4,7 @@ import axios from 'axios';
 
 
 type AddressInfo = {
+  id: number;
   address: string;
   postalCode?: string;
   latitude?: number;
@@ -50,6 +51,9 @@ const AdminPage = () => {
   const addAddress = async () => {
     const order = parseInt(currentOrder);
     if (currentAddress.trim() !== "") {
+            // 新しいIDを生成（現在のアドレスリストの長さ＋1）
+            const newId = addresses.length + 1;
+
       // 新しいアドレス情報を追加する際、次の順番を自動的に設定
       const newOrder = addresses.length > 0 ? addresses[addresses.length - 1].order + 1 : 1;
   
@@ -68,6 +72,7 @@ const AdminPage = () => {
 
   // 新しいアドレス情報を追加
   updatedAddresses.push({
+    id: newId, // 新しいIDを設定
     address: currentAddress,
     postalCode: currentPostalCode,
     latitude: geoData.latitude,
