@@ -1,169 +1,36 @@
-import React, { useEffect, useState } from "react";
-import "./UserRegistration.css";
+import React, { useState } from 'react';
+import { User } from './models/User';  // 正しいパスに調整
 
-interface Errors {
-  userName?: string;
-  postalCode?: string;
-  address?: string;
-  email?: string;
-}
+const UserForm: React.FC = () => {
+  const [user, setUser] = useState<User>({ username: '', address: '', residence: '' });
 
-interface User {
-  id: number;
-  userName: string;
-  postalCode?: string;
-  address: string;
-  email?: string;
-  isEditing?: boolean;
-}
-
-const UserRegistration = () => {
-  const [newUserName, setNewUserName] = useState<string>("");
-  const [newAddress, setNewAddress] = useState<string>("");
-  const [newUserEmail, setNewUserEmail] = useState<string>("");
-  const [users, setUsers] = useState<User[]>([]);
-  const [errors, setErrors] = useState<Errors>({});
-
-  useEffect(() => {
-    const storedUsers = localStorage.getItem("users");
-    if (storedUsers) {
-      setUsers(JSON.parse(storedUsers));
-    }
-  }, []);
-
-  // ユーザーリストが変更された時にローカルストレージを更新する
-  useEffect(() => {
-    localStorage.setItem("users", JSON.stringify(users));
-  }, [users]);
-
-  const validate = () => {
-    let tempErrors: Errors = {};
-    if (!newUserName) tempErrors.userName = "ユーザー名を入力してください。";
-    if (!newUserEmail) tempErrors.email = "メールアドレスを入力してください。";
-    if (!newAddress) tempErrors.address = "住所を入力してください。";
-
-    setErrors(tempErrors);
-    return Object.keys(tempErrors).length === 0;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const addUser = () => {
-    if (validate()) {
-      const newUser = {
-        id: Math.max(0, ...users.map(u => u.id)) + 1, // 一意のIDを生成
-        userName: newUserName,
-        address: newAddress,
-        email: newUserEmail,
-        isEditing: false,
-      };
-      setUsers([...users, newUser]);
-
-      // フォームをクリアしたくない場合は、以下の行をコメントアウトします
-      // setNewUserName('');
-      // setNewAddress('');
-      // setNewUserEmail('');
-    }
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // ここでユーザー情報を処理（例: データベースに保存）
+    console.log(user);
   };
-
-  const toggleEdit = (userId: number) => {
-    setUsers(users.map(user => {
-      if (user.id === userId) {
-        // 編集中のユーザーがあれば、編集状態を反転させる
-        return { ...user, isEditing: !user.isEditing };
-      }
-      return user;
-    }));
-  };
-
-    // 編集されたユーザーを保存する関数
-    const saveEdit = (userId: number) => {
-      const updatedUsers = users.map(user => {
-        if (user.id === userId) {
-          return {
-            ...user,
-            userName: newUserName,
-            address: newAddress,
-            email: newUserEmail,
-            isEditing: false,
-          };
-        }
-        return user;
-      });
-      setUsers(updatedUsers);
-      // ...フォームクリアのコード...
-    };
 
   return (
-    <div>
-      <div className="table-container">
-        <table className="table">
-          <tbody>
-            <tr>
-              <th>ユーザー名</th>
-              <td>
-                <input
-                  type="text"
-                  className="input-no-border"
-                  value={newUserName}
-                  onChange={(e) => setNewUserName(e.target.value)}
-                  placeholder="ユーザー名"
-                />
-                {errors.userName && (
-                  <div className="error">{errors.userName}</div>
-                )}
-              </td>
-            </tr>
-            <tr>
-              <th>ユーザーアドレス</th>
-              <td>
-                <input
-                  type="text"
-                  className="input-no-border"
-                  value={newUserEmail}
-                  onChange={(e) => setNewUserEmail(e.target.value)}
-                  placeholder="ユーザーアドレス"
-                />
-                {errors.email && <div className="error">{errors.email}</div>}
-              </td>
-            </tr>
-            <tr>
-              <th>居住地</th>
-              <td>
-                <input
-                  type="text"
-                  className="input-no-border"
-                  value={newAddress}
-                  onChange={(e) => setNewAddress(e.target.value)}
-                  placeholder="居住地"
-                />
-
-                {errors.address && (
-                  <div className="error">{errors.address}</div>
-                )}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label>ユーザー名:</label>
+        <input type="text" name="username" value={user.username} onChange={handleChange} />
       </div>
-
-      <div className="button-container">
-        {users.map((user) =>
-          user.isEditing ? (
-            // 編集保存ボタン
-             <button onClick={() => saveEdit(user.id)}>保存</button>
-          ) : (
-            // 通常の編集ボタン
-            <button onClick={() => toggleEdit(user.id)}>編集</button>
-          )
-        )}
+      <div>
+        <label>ユーザーアドレス:</label>
+        <input type="text" name="address" value={user.address} onChange={handleChange} />
       </div>
-
-
-      {/* <div className="button-container">
-      <button onClick={addUser}>登録</button>
-        <button>編集</button>
-      </div> */}
-    </div>
+      <div>
+        <label>居住地:</label>
+        <input type="text" name="residence" value={user.residence} onChange={handleChange} />
+      </div>
+      <button type="submit">登録</button>
+    </form>
   );
 };
 
-export default UserRegistration;
+export default UserForm;
