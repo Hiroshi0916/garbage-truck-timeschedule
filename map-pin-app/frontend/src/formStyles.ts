@@ -1,18 +1,18 @@
-const formFieldStyle = {
+// formStyles.ts
+export const formFieldStyle = {
     marginBottom: '10px'
   };
   
-  const labelStyle = {
+  export const labelStyle = {
     marginRight: '10px'
   };
   
-  const inputStyle = {
+  export const inputStyle = {
     padding: '5px'
   };
   
-  const buttonStyle = {
+  export const buttonStyle = {
     marginTop: '10px',
     padding: '5px 10px'
   };
   
-  export {};
