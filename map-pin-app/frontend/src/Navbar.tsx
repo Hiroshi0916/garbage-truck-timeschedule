@@ -12,10 +12,15 @@ const Navbar = () => {
         <Link className="menu-item" to="/" style={{ color: 'white', padding: '0 10px', textDecoration: 'none' }}>Home</Link>
         
         {/* ユーザー情報登録ページへのリンク */}
-        <Link className="menu-item" to="/user-registration" style={{ color: 'white', padding: '0 10px', textDecoration: 'none' }}>Register</Link>
+        <Link className="menu-item" to="/user-registration" style={{ color: 'white', padding: '0 10px', textDecoration: 'none' }}>ユーザー登録</Link>
 
         {/* 管理者向けボタン（条件に応じて表示） */}
         {isAdmin && <Link className="menu-item" to="/admin" style={{ color: 'white', padding: '0 10px', textDecoration: 'none' }}>Admin</Link>}
+      
+    
+      <Link to="/user/profile">プロフィール</Link>
+      <Link to="/user/edit">プロフィール編集</Link>
+      
       </div>
     </nav>
   );
