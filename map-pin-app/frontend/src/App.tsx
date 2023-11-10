@@ -162,8 +162,8 @@ function App() {
 
         <Route path="/user-registration" element={<UserRegistration />} />
         <Route path="/admin" element={<AdminPage />} /> 
-        <Route path="/user/profile" component={UserProfile} />
-        <Route path="/user/edit" component={UserEditForm} />
+        <Route path="/user/profile" element={<UserProfile/>}/> 
+        <Route path="/user/edit" element={<UserEditForm/>}/>
       </Routes>
     </Router>
   );
