@@ -1,12 +1,22 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, ReactNode } from 'react';
+
+// Contextの型を定義
+interface GoogleMapsAPIContextType {
+    isLoaded: boolean;
+    setIsLoaded: (isLoaded: boolean) => void;
+  }
+  const defaultContextValue: GoogleMapsAPIContextType = {
+    isLoaded: false,
+    setIsLoaded: () => {},
+  };
 
 // Contextの作成
-const GoogleMapsAPIContext = createContext();
+const GoogleMapsAPIContext = createContext<GoogleMapsAPIContextType>(defaultContextValue);
 
 // Providerコンポーネントの作成
-export const GoogleMapsAPIProvider = ({ children }) => {
-  const [isLoaded, setIsLoaded] = useState(false);
-
+export const GoogleMapsAPIProvider = ({ children }: { children: ReactNode }) => {
+    const [isLoaded, setIsLoaded] = useState(false);
+  
   return (
     <GoogleMapsAPIContext.Provider value={{ isLoaded, setIsLoaded }}>
       {children}
