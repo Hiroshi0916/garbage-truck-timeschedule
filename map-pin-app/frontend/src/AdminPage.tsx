@@ -2,16 +2,7 @@ import React, { useEffect, useState } from "react";
 import './AdminPage.css';
 import axios from 'axios';
 import { GoogleMap, LoadScript, Polyline } from '@react-google-maps/api';
-
-
-type AddressInfo = {
-  id: number;
-  address: string;
-  postalCode?: string;
-  latitude?: number;
-  longitude?: number;
-  order: number;
-};
+import { AddressInfo } from "./types";
 
 const AdminPage = () => {
   const [addresses, setAddresses] = useState<AddressInfo[]>(

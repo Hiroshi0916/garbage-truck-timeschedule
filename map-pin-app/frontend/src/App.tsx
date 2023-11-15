@@ -12,6 +12,7 @@ import UserRegistration from "./UserRegistration";
 import AdminPage from "./AdminPage";
 import UserProfile from "./UserProfile";
 import UserEditForm from "./UserEditForm";
+import { AddressInfo } from "./types";
 
 // DirectionsResult は google.maps 名前空間からインポート
 type DirectionsResult = google.maps.DirectionsResult;
