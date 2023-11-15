@@ -2,7 +2,6 @@ import React, { useCallback, useState } from "react";
 import {
   GoogleMap,
   LoadScript,
-  DirectionsRenderer,
 } from "@react-google-maps/api";
 import Navbar from "./Navbar";
 import "./App.css";
@@ -11,10 +10,8 @@ import UserRegistration from "./UserRegistration";
 import AdminPage from "./AdminPage";
 import UserProfile from "./UserProfile";
 import UserEditForm from "./UserEditForm";
-import { AddressInfo } from "./types";
 
-// DirectionsResult は google.maps 名前空間からインポート
-type DirectionsResult = google.maps.DirectionsResult;
+
 
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 

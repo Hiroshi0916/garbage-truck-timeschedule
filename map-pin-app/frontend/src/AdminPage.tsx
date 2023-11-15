@@ -18,7 +18,7 @@ const AdminPage = () => {
   };
   const defaultCenter = { lat: 35.6895, lng: 139.6917 }; // 初期の中心点（例：東京）
 
-    const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY!;
+    // const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY!;
 
 
     const getRoute = () => {
