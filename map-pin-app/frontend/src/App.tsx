@@ -64,6 +64,7 @@ if (lastAddress && lastAddress.latitude !== undefined && lastAddress.longitude !
   destination = new google.maps.LatLng(lastAddress.latitude, lastAddress.longitude);
 }
 
+
 const directionsServiceOptions = {
   origin: currentLocation,
   destination: destination,
