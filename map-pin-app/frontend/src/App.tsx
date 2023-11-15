@@ -4,7 +4,6 @@ import {
   LoadScript,
   DirectionsRenderer,
 } from "@react-google-maps/api";
-
 import Navbar from "./Navbar";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
