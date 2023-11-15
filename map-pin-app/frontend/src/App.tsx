@@ -46,6 +46,21 @@ function App() {
     lng: number;
   } | null>(null);
 
+const lastAddress = addresses[addresses.length - 1];
+
+if (lastAddress.latitude !== undefined && lastAddress.longitude !== undefined) {
+  const destination = new google.maps.LatLng(lastAddress.latitude, lastAddress.longitude);
+} 
+
+
+const directionsServiceOptions = {
+  origin: currentLocation,
+  destination: destination,
+  waypoints: waypoints,
+  travelMode: google.maps.TravelMode.DRIVING,
+};
+
+
   // 住所のリストを更新する関数（例えば、APIから取得したり、ユーザーの入力に基づいて更新したりする）
 const updateAddresses = (newAddresses: AddressInfo[]) => {
   setAddresses(newAddresses);
@@ -136,10 +151,16 @@ const updateAddresses = (newAddresses: AddressInfo[]) => {
   const calculateRoute = async () => {
     if (!currentLocation || addresses.length === 0) return;
 
-    const waypoints = addresses.map((addr: AddressInfo) => ({
-      location: new google.maps.LatLng(addr.latitude, addr.longitude),
-      stopover: true,
-    }));
+    const waypoints = addresses.map((addr: AddressInfo) => {
+      if (addr.latitude === undefined || addr.longitude === undefined) {
+        // ここでエラーを処理するか、適切なフォールバックを提供する
+      }
+      return {
+        location: new google.maps.LatLng(addr.latitude, addr.longitude),
+        stopover: true,
+      };
+    });
+    
 
     const directionsServiceOptions = {
       origin: currentLocation,
