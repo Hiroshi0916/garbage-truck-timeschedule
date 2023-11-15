@@ -27,11 +27,9 @@ const AdminPage = () => {
   };
   const defaultCenter = { lat: 35.6895, lng: 139.6917 }; // 初期の中心点（例：東京）
 
-    // APIキーを取得
     const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY!;
 
 
-    // Google Mapsに表示するルートを計算する関数
     const getRoute = () => {
       const route = addresses.map((addr) => ({
         lat: addr.latitude!,
@@ -42,13 +40,11 @@ const AdminPage = () => {
 
 
   useEffect(() => {
-    // アドレスリストが更新されたらローカルストレージに保存する
     localStorage.setItem("addresses", JSON.stringify(addresses));
   }, [addresses]);
 
   const fetchGeocode = async (address:string, postalCode:string) => {
     try {
-      // Encode the address and postalCode to be URL-safe
       const encodedAddress = encodeURIComponent(address);
       const encodedPostalCode = encodeURIComponent(postalCode);
       
@@ -62,7 +58,6 @@ const AdminPage = () => {
       const location = response.data.results[0].geometry.location;
 
       console.log(`Latitude: ${location.lat}, Longitude: ${location.lng}`);
- // 緯度と経度を返す
  return { latitude: location.lat, longitude: location.lng };
     } catch (error) {
       console.error("There was an error fetching the geocode:", error);
@@ -72,10 +67,8 @@ const AdminPage = () => {
   const addAddress = async () => {
     const order = parseInt(currentOrder);
     if (currentAddress.trim() !== "") {
-            // 新しいIDを生成（現在のアドレスリストの長さ＋1）
             const newId = addresses.length + 1;
 
-      // 新しいアドレス情報を追加する際、次の順番を自動的に設定
       const newOrder = addresses.length > 0 ? addresses[addresses.length - 1].order + 1 : 1;
   
       const updatedAddresses = addresses.map((addr) => ({
@@ -101,21 +94,18 @@ const AdminPage = () => {
     order: newOrder,
   });
 
-    // 順番に従ってソート（追加時には不要かもしれませんが、一応入れておきます）
     updatedAddresses.sort((a, b) => a.order - b.order);
-
       setAddresses(updatedAddresses);
       setCurrentAddress("");
       setCurrentPostalCode("");
 
-      // ローカルストレージに保存
       localStorage.setItem("addresses", JSON.stringify(updatedAddresses));
     }
     fetchGeocode(currentAddress, currentPostalCode);
   };
 
   const removeAddress = (orderToRemove: number) => {
-    // 順番に基づいてアドレスを削除し、それ以降のアドレスの順番をデクリメントする
+  
     const updatedAddresses = addresses
       .filter((addr) => addr.order !== orderToRemove)
       .map((addr) => ({
@@ -125,11 +115,9 @@ const AdminPage = () => {
 
     setAddresses(updatedAddresses);
 
-    // ローカルストレージを更新
     localStorage.setItem("addresses", JSON.stringify(updatedAddresses));
   };
 
-  // 住所リストを表形式で表示する関数
   const renderAddressTable = () => {
     return (
       <table className="table">
@@ -148,7 +136,7 @@ const AdminPage = () => {
             <tr key={info.order}>
               <td>{info.order}</td>
               <td>{info.postalCode || "未設定"}</td>
-              {/* 郵便番号のデータを表示 */}
+
               <td>{info.address}</td>
               <td>{info.latitude || "未設定"}</td>
               <td>{info.longitude || "未設定"}</td>
