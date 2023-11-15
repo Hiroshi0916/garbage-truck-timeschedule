@@ -1,18 +1,20 @@
-import React, { useCallback,  useState } from "react";
-import { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer } from "@react-google-maps/api";
+import React, { useCallback, useState } from "react";
+import {
+  GoogleMap,
+  LoadScript,
+  DirectionsService,
+  DirectionsRenderer,
+} from "@react-google-maps/api";
 
+// DirectionsResult は google.maps 名前空間からインポート
+type DirectionsResult = google.maps.DirectionsResult;
 
 import Navbar from "./Navbar";
 import "./App.css";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UserRegistration from "./UserRegistration";
 import AdminPage from "./AdminPage";
-import UserProfile from "./UserProfile"; 
+import UserProfile from "./UserProfile";
 import UserEditForm from "./UserEditForm";
 
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
@@ -21,7 +23,6 @@ const defaultPosition = {
   lat: 35.681236,
   lng: 139.767125,
 };
-
 
 function App() {
   const mapContainerStyle = {
@@ -37,7 +38,31 @@ function App() {
     { lat: number; lng: number } | undefined
   >(defaultPosition);
 
-  const [directionsResponse, setDirectionsResponse] = useState<DirectionsResult | null>(null);
+  const [directionsResponse, setDirectionsResponse] =
+    useState<DirectionsResult | null>(null);
+  const [currentLocation, setCurrentLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+
+  // 現在地を取得するロジック（例えば、ブラウザの Geolocation APIを使用）
+  const fetchCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setCurrentLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        () => {
+          console.error("Error getting the location");
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  };
 
   const handleSearch = async () => {
     console.log("Sending address:", address);
@@ -91,7 +116,7 @@ function App() {
     }
   }, []);
 
-   // マップ読み込み時の処理
+  // マップ読み込み時の処理
   const handleMapLoad = (map: any) => {
     console.log("Position:", position);
 
@@ -102,13 +127,12 @@ function App() {
     console.log("Map clicked at:", e.latLng.toString());
   };
 
-
   const calculateRoute = async () => {
-    if (!address) return; // 住所が空の場合は何もしない
+    if (!address || !currentLocation) return;
 
     const directionsServiceOptions = {
       origin: currentLocation, // 現在地または特定の出発点
-      destination: address,    // ユーザーが入力した住所
+      destination: address, // ユーザーが入力した住所
       travelMode: google.maps.TravelMode.DRIVING, // 旅行モードを TravelMode 列挙型で指定
     };
 
@@ -135,69 +159,68 @@ function App() {
     }
   };
 
-
   return (
     <LoadScript
-    googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}
-  >
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div className="App-layout">
-              <div className="App-search-container">
-                <div className="App-input-group">
-                  <label>住所:</label>
-                  <input
-                    className="App-input"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                  />
-                </div>
-                <div className="App-input-group">
-                  <label>郵便番号:</label>
-                  <input
-                    className="App-input"
-                    value={postalCode}
-                    onChange={(e) => setPostalCode(e.target.value)}
-                  />
-                </div>
-                <button className="App-button" onClick={getCurrentLocation}>
-                  現在地を取得
-                </button>
-                <button className="App-button" onClick={handleSearch}>
-                  検索
-                </button>
-                <div className="App-coordinates">
-                  緯度: {lat ? lat.toFixed(6) : "N/A"}
-                  <br />
-                  経度: {lng ? lng.toFixed(6) : "N/A"}
-                </div>
-              </div>
-
-              <div className="App-map-container">
-              <GoogleMap
-      mapContainerStyle={mapContainerStyle}
-      center={position}
-      zoom={13}
-      onLoad={handleMapLoad}
-      onClick={handleMapClick}
+      googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}
     >
-      {renderDirections()}
-    </GoogleMap>
-              </div>
-            </div>
-          }
-        />
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <div className="App-layout">
+                <div className="App-search-container">
+                  <div className="App-input-group">
+                    <label>住所:</label>
+                    <input
+                      className="App-input"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                    />
+                  </div>
+                  <div className="App-input-group">
+                    <label>郵便番号:</label>
+                    <input
+                      className="App-input"
+                      value={postalCode}
+                      onChange={(e) => setPostalCode(e.target.value)}
+                    />
+                  </div>
+                  <button className="App-button" onClick={getCurrentLocation}>
+                    現在地を取得
+                  </button>
+                  <button className="App-button" onClick={handleSearch}>
+                    検索
+                  </button>
+                  <div className="App-coordinates">
+                    緯度: {lat ? lat.toFixed(6) : "N/A"}
+                    <br />
+                    経度: {lng ? lng.toFixed(6) : "N/A"}
+                  </div>
+                </div>
 
-        <Route path="/user-registration" element={<UserRegistration />} />
-        <Route path="/admin" element={<AdminPage />} /> 
-        <Route path="/user/profile" element={<UserProfile/>}/> 
-        <Route path="/user/edit" element={<UserEditForm/>}/>
-      </Routes>
-    </Router>
+                <div className="App-map-container">
+                  <GoogleMap
+                    mapContainerStyle={mapContainerStyle}
+                    center={position}
+                    zoom={13}
+                    onLoad={handleMapLoad}
+                    onClick={handleMapClick}
+                  >
+                    {renderDirections()}
+                  </GoogleMap>
+                </div>
+              </div>
+            }
+          />
+
+          <Route path="/user-registration" element={<UserRegistration />} />
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/user/profile" element={<UserProfile />} />
+          <Route path="/user/edit" element={<UserEditForm />} />
+        </Routes>
+      </Router>
     </LoadScript>
   );
 }
