@@ -27,6 +27,10 @@ const AdminPage = () => {
   };
   const defaultCenter = { lat: 35.6895, lng: 139.6917 }; // 初期の中心点（例：東京）
 
+    // APIキーを取得
+    const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY!;
+
+
     // Google Mapsに表示するルートを計算する関数
     const getRoute = () => {
       const route = addresses.map((addr) => ({
@@ -175,7 +179,8 @@ const AdminPage = () => {
       <button onClick={addAddress}>住所を追加</button>
       {renderAddressTable()}
 
-      <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
+      <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY!}>
+
   <GoogleMap
     mapContainerStyle={mapStyles}
     zoom={10}
@@ -196,7 +201,6 @@ const AdminPage = () => {
     />
   </GoogleMap>
 </LoadScript>
-
     </div>
   );
 };
