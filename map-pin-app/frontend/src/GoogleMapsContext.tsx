@@ -9,7 +9,6 @@ interface GoogleMapsAPIContextType {
     isLoaded: false,
     setIsLoaded: () => {},
   };
-
 // Contextの作成
 const GoogleMapsAPIContext = createContext<GoogleMapsAPIContextType>(defaultContextValue);
 
