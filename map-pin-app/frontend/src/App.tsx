@@ -181,7 +181,7 @@ function App() {
     }
 
   // waypoints 配列の生成
-  const waypoints = addresses
+    const waypoints = addresses
     .map((addr: AddressInfo) => {
       if (addr.latitude !== undefined && addr.longitude !== undefined) {
         return {
@@ -191,7 +191,10 @@ function App() {
       }
       return null;
     })
-    .filter((wp): wp is DirectionsWaypoint => wp !== null); // null 型の要素を除外
+    .filter((wp): wp is DirectionsWaypoint => wp !== null);
+  
+
+
 
     const directionsServiceOptions = {
       origin: currentLocation,
