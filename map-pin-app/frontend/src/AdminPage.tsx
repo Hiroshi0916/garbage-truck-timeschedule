@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import './AdminPage.css';
 import axios from 'axios';
+import { GoogleMap, LoadScript, Polyline } from '@react-google-maps/api';
 
 
 type AddressInfo = {
@@ -19,6 +20,22 @@ const AdminPage = () => {
   const [currentAddress, setCurrentAddress] = useState("");
   const [currentPostalCode, setCurrentPostalCode] = useState("");
   const [currentOrder] = useState("");
+
+  const mapStyles = {
+    height: "400px",
+    width: "100%"
+  };
+  const defaultCenter = { lat: 35.6895, lng: 139.6917 }; // 初期の中心点（例：東京）
+
+    // Google Mapsに表示するルートを計算する関数
+    const getRoute = () => {
+      const route = addresses.map((addr) => ({
+        lat: addr.latitude!,
+        lng: addr.longitude!
+      }));
+      return route;
+    };
+
 
   useEffect(() => {
     // アドレスリストが更新されたらローカルストレージに保存する
@@ -157,6 +174,29 @@ const AdminPage = () => {
       />
       <button onClick={addAddress}>住所を追加</button>
       {renderAddressTable()}
+
+      <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
+  <GoogleMap
+    mapContainerStyle={mapStyles}
+    zoom={10}
+    center={defaultCenter}
+  >
+    <Polyline
+      path={getRoute()}
+      options={{
+        strokeColor: "#FF0000",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        clickable: false,
+        draggable: false,
+        editable: false,
+        visible: true,
+        zIndex: 1
+      }}
+    />
+  </GoogleMap>
+</LoadScript>
+
     </div>
   );
 };
