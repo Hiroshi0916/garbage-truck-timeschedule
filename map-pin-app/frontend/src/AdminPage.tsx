@@ -120,7 +120,8 @@ const AdminPage = () => {
 
   const renderAddressTable = () => {
     return (
-      <table className="table">
+      <div className="table-container">
+              <table className="table">
         <thead>
           <tr>
             <th>順番</th>
@@ -147,6 +148,8 @@ const AdminPage = () => {
           ))}
         </tbody>
       </table>
+      </div>
+
     );
   };
 
@@ -165,8 +168,8 @@ const AdminPage = () => {
         placeholder="住所を入力"
       />
       <button onClick={addAddress}>住所を追加</button>
-      {renderAddressTable()}
 
+      {renderAddressTable()}
       <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY!}>
 
   <GoogleMap
@@ -189,6 +192,8 @@ const AdminPage = () => {
     />
   </GoogleMap>
 </LoadScript>
+
+
     </div>
   );
 };

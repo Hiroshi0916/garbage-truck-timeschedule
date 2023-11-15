@@ -57,3 +57,7 @@
     background-color: #c9302c;
   }
   
+
+.table-container {
+  margin-bottom: 10%; /* 下部に10%のマージンを追加 */
+}

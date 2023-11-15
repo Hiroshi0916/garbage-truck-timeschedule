@@ -1,5 +1,6 @@
 import React, { useCallback,  useState } from "react";
-import { GoogleMap, LoadScript} from "@react-google-maps/api";
+import { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer } from "@react-google-maps/api";
+
 
 import Navbar from "./Navbar";
 import "./App.css";
@@ -35,6 +36,8 @@ function App() {
   const [position, setPosition] = useState<
     { lat: number; lng: number } | undefined
   >(defaultPosition);
+
+  const [directionsResponse, setDirectionsResponse] = useState<DirectionsResult | null>(null);
 
   const handleSearch = async () => {
     console.log("Sending address:", address);
@@ -99,6 +102,40 @@ function App() {
     console.log("Map clicked at:", e.latLng.toString());
   };
 
+
+  const calculateRoute = async () => {
+    if (!address) return; // 住所が空の場合は何もしない
+
+    const directionsServiceOptions = {
+      origin: currentLocation, // 現在地または特定の出発点
+      destination: address,    // ユーザーが入力した住所
+      travelMode: google.maps.TravelMode.DRIVING, // 旅行モードを TravelMode 列挙型で指定
+    };
+
+    const directionsService = new google.maps.DirectionsService();
+    directionsService.route(directionsServiceOptions, (result, status) => {
+      if (status === google.maps.DirectionsStatus.OK && result) {
+        setDirectionsResponse(result);
+      } else {
+        console.error(`error fetching directions ${result}`);
+      }
+    });
+  };
+
+  // DirectionsRenderer コンポーネントの追加
+  const renderDirections = () => {
+    if (directionsResponse) {
+      return (
+        <DirectionsRenderer
+          options={{
+            directions: directionsResponse,
+          }}
+        />
+      );
+    }
+  };
+
+
   return (
     <LoadScript
     googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}
@@ -141,14 +178,15 @@ function App() {
               </div>
 
               <div className="App-map-container">
-                  <GoogleMap
-                    mapContainerStyle={mapContainerStyle}
-                    center={position}
-                    zoom={13}
-                    onLoad={handleMapLoad}
-                    onClick={handleMapClick}
-                  >
-                  </GoogleMap>
+              <GoogleMap
+      mapContainerStyle={mapContainerStyle}
+      center={position}
+      zoom={13}
+      onLoad={handleMapLoad}
+      onClick={handleMapClick}
+    >
+      {renderDirections()}
+    </GoogleMap>
               </div>
             </div>
           }
