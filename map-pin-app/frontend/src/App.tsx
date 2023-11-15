@@ -60,7 +60,6 @@ const waypoints = addresses.map(addr => {
   return null;
 }).filter(wp => wp !== null);
 
-
 if (lastAddress && lastAddress.latitude !== undefined && lastAddress.longitude !== undefined) {
   destination = new google.maps.LatLng(lastAddress.latitude, lastAddress.longitude);
 }
