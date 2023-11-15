@@ -48,9 +48,20 @@ function App() {
 
 const lastAddress = addresses[addresses.length - 1];
 
-if (lastAddress.latitude !== undefined && lastAddress.longitude !== undefined) {
-  const destination = new google.maps.LatLng(lastAddress.latitude, lastAddress.longitude);
-} 
+let destination;
+
+const waypoints = addresses.map(address => {
+  if (address.latitude !== undefined && address.longitude !== undefined) {
+    return {
+      location: new google.maps.LatLng(address.latitude, address.longitude),
+      stopover: true
+    };
+  }
+  return null;
+}).filter(wp => wp !== null);
+if (lastAddress && lastAddress.latitude !== undefined && lastAddress.longitude !== undefined) {
+  destination = new google.maps.LatLng(lastAddress.latitude, lastAddress.longitude);
+}
 
 
 const directionsServiceOptions = {
