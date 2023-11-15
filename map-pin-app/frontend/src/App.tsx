@@ -46,38 +46,37 @@ function App() {
     lng: number;
   } | null>(null);
 
-const lastAddress = addresses[addresses.length - 1];
+  const lastAddress = addresses[addresses.length - 1];
 
-let destination;
+  let destination;
 
-const waypoints = addresses.map(addr => {
-  if (addr.latitude !== undefined && addr.longitude !== undefined) {
-    return {
-      location: new google.maps.LatLng(addr.latitude, addr.longitude),
-      stopover: true
-    };
+  const waypoints = addresses
+    .map((addr) => {
+      if (addr.latitude !== undefined && addr.longitude !== undefined) {
+        return {
+          location: new google.maps.LatLng(addr.latitude, addr.longitude),
+          stopover: true,
+        };
+      }
+      return null;
+    })
+    .filter((wp) => wp != null);
+
+  if (
+    lastAddress &&
+    lastAddress.latitude !== undefined &&
+    lastAddress.longitude !== undefined
+  ) {
+    destination = new google.maps.LatLng(
+      lastAddress.latitude,
+      lastAddress.longitude
+    );
   }
-  return null;
-}).filter(wp => wp !== null);
-
-
-if (lastAddress && lastAddress.latitude !== undefined && lastAddress.longitude !== undefined) {
-  destination = new google.maps.LatLng(lastAddress.latitude, lastAddress.longitude);
-}
-
-
-const directionsServiceOptions = {
-  origin: currentLocation,
-  destination: destination,
-  waypoints: waypoints,
-  travelMode: google.maps.TravelMode.DRIVING,
-};
-
 
   // 住所のリストを更新する関数（例えば、APIから取得したり、ユーザーの入力に基づいて更新したりする）
-const updateAddresses = (newAddresses: AddressInfo[]) => {
-  setAddresses(newAddresses);
-};
+  const updateAddresses = (newAddresses: AddressInfo[]) => {
+    setAddresses(newAddresses);
+  };
 
   // 現在地を取得するロジック（例えば、ブラウザの Geolocation APIを使用）
   const fetchCurrentLocation = () => {
@@ -164,20 +163,39 @@ const updateAddresses = (newAddresses: AddressInfo[]) => {
   const calculateRoute = async () => {
     if (!currentLocation || addresses.length === 0) return;
 
-    const waypoints = addresses.map((addr: AddressInfo) => {
-      if (addr.latitude === undefined || addr.longitude === undefined) {
-        // ここでエラーを処理するか、適切なフォールバックを提供する
+    const lastAddress = addresses[addresses.length - 1];
+    let destination;
+
+    if (
+      lastAddress &&
+      lastAddress.latitude !== undefined &&
+      lastAddress.longitude !== undefined
+    ) {
+      destination = new google.maps.LatLng(
+        lastAddress.latitude,
+        lastAddress.longitude
+      );
+    } else {
+      console.error("Destination is undefined");
+      return;
+    }
+
+  // waypoints 配列の生成
+  const waypoints = addresses
+    .map((addr: AddressInfo) => {
+      if (addr.latitude !== undefined && addr.longitude !== undefined) {
+        return {
+          location: new google.maps.LatLng(addr.latitude, addr.longitude),
+          stopover: true,
+        };
       }
-      return {
-        location: new google.maps.LatLng(addr.latitude, addr.longitude),
-        stopover: true,
-      };
-    });
-    
+      return null;
+    })
+    .filter((wp): wp is DirectionsWaypoint => wp !== null); // null 型の要素を除外
 
     const directionsServiceOptions = {
       origin: currentLocation,
-      destination: addresses[addresses.length - 1], // 最後の住所を目的地とする
+      destination: destination,
       waypoints: waypoints,
       travelMode: google.maps.TravelMode.DRIVING,
     };
