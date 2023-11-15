@@ -2,12 +2,8 @@ import React, { useCallback, useState } from "react";
 import {
   GoogleMap,
   LoadScript,
-  DirectionsService,
   DirectionsRenderer,
 } from "@react-google-maps/api";
-
-// DirectionsResult は google.maps 名前空間からインポート
-type DirectionsResult = google.maps.DirectionsResult;
 
 import Navbar from "./Navbar";
 import "./App.css";
@@ -16,6 +12,9 @@ import UserRegistration from "./UserRegistration";
 import AdminPage from "./AdminPage";
 import UserProfile from "./UserProfile";
 import UserEditForm from "./UserEditForm";
+
+// DirectionsResult は google.maps 名前空間からインポート
+type DirectionsResult = google.maps.DirectionsResult;
 
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -37,6 +36,7 @@ function App() {
   const [position, setPosition] = useState<
     { lat: number; lng: number } | undefined
   >(defaultPosition);
+  const [addresses, setAddresses] = useState<AddressInfo[]>([]);
 
   const [directionsResponse, setDirectionsResponse] =
     useState<DirectionsResult | null>(null);
@@ -44,6 +44,11 @@ function App() {
     lat: number;
     lng: number;
   } | null>(null);
+
+  // 住所のリストを更新する関数（例えば、APIから取得したり、ユーザーの入力に基づいて更新したりする）
+const updateAddresses = (newAddresses: AddressInfo[]) => {
+  setAddresses(newAddresses);
+};
 
   // 現在地を取得するロジック（例えば、ブラウザの Geolocation APIを使用）
   const fetchCurrentLocation = () => {
@@ -128,12 +133,18 @@ function App() {
   };
 
   const calculateRoute = async () => {
-    if (!address || !currentLocation) return;
+    if (!currentLocation || addresses.length === 0) return;
+
+    const waypoints = addresses.map((addr: AddressInfo) => ({
+      location: new google.maps.LatLng(addr.latitude, addr.longitude),
+      stopover: true,
+    }));
 
     const directionsServiceOptions = {
-      origin: currentLocation, // 現在地または特定の出発点
-      destination: address, // ユーザーが入力した住所
-      travelMode: google.maps.TravelMode.DRIVING, // 旅行モードを TravelMode 列挙型で指定
+      origin: currentLocation,
+      destination: addresses[addresses.length - 1], // 最後の住所を目的地とする
+      waypoints: waypoints,
+      travelMode: google.maps.TravelMode.DRIVING,
     };
 
     const directionsService = new google.maps.DirectionsService();
