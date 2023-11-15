@@ -50,15 +50,17 @@ const lastAddress = addresses[addresses.length - 1];
 
 let destination;
 
-const waypoints = addresses.map(address => {
-  if (address.latitude !== undefined && address.longitude !== undefined) {
+const waypoints = addresses.map(addr => {
+  if (addr.latitude !== undefined && addr.longitude !== undefined) {
     return {
-      location: new google.maps.LatLng(address.latitude, address.longitude),
+      location: new google.maps.LatLng(addr.latitude, addr.longitude),
       stopover: true
     };
   }
   return null;
 }).filter(wp => wp !== null);
+
+
 if (lastAddress && lastAddress.latitude !== undefined && lastAddress.longitude !== undefined) {
   destination = new google.maps.LatLng(lastAddress.latitude, lastAddress.longitude);
 }
