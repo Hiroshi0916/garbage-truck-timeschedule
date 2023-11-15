@@ -36,65 +36,8 @@ function App() {
   const [position, setPosition] = useState<
     { lat: number; lng: number } | undefined
   >(defaultPosition);
-  const [addresses, setAddresses] = useState<AddressInfo[]>([]);
 
-  const [directionsResponse, setDirectionsResponse] =
-    useState<DirectionsResult | null>(null);
-  const [currentLocation, setCurrentLocation] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
 
-  const lastAddress = addresses[addresses.length - 1];
-
-  let destination;
-
-  const waypoints = addresses
-    .map((addr) => {
-      if (addr.latitude !== undefined && addr.longitude !== undefined) {
-        return {
-          location: new google.maps.LatLng(addr.latitude, addr.longitude),
-          stopover: true,
-        };
-      }
-      return null;
-    })
-    .filter((wp) => wp != null);
-
-  if (
-    lastAddress &&
-    lastAddress.latitude !== undefined &&
-    lastAddress.longitude !== undefined
-  ) {
-    destination = new google.maps.LatLng(
-      lastAddress.latitude,
-      lastAddress.longitude
-    );
-  }
-
-  // 住所のリストを更新する関数（例えば、APIから取得したり、ユーザーの入力に基づいて更新したりする）
-  const updateAddresses = (newAddresses: AddressInfo[]) => {
-    setAddresses(newAddresses);
-  };
-
-  // 現在地を取得するロジック（例えば、ブラウザの Geolocation APIを使用）
-  const fetchCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setCurrentLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        },
-        () => {
-          console.error("Error getting the location");
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  };
 
   const handleSearch = async () => {
     console.log("Sending address:", address);
@@ -159,71 +102,7 @@ function App() {
     console.log("Map clicked at:", e.latLng.toString());
   };
 
-  const calculateRoute = async () => {
-    if (!currentLocation || addresses.length === 0) return;
 
-    const lastAddress = addresses[addresses.length - 1];
-    let destination;
-
-    if (
-      lastAddress &&
-      lastAddress.latitude !== undefined &&
-      lastAddress.longitude !== undefined
-    ) {
-      destination = new google.maps.LatLng(
-        lastAddress.latitude,
-        lastAddress.longitude
-      );
-    } else {
-      console.error("Destination is undefined");
-      return;
-    }
-
-  // waypoints 配列の生成
-    const waypoints = addresses
-    .map((addr: AddressInfo) => {
-      if (addr.latitude !== undefined && addr.longitude !== undefined) {
-        return {
-          location: new google.maps.LatLng(addr.latitude, addr.longitude),
-          stopover: true,
-        };
-      }
-      return null;
-    })
-    .filter((wp): wp is DirectionsWaypoint => wp !== null);
-  
-
-
-
-    const directionsServiceOptions = {
-      origin: currentLocation,
-      destination: destination,
-      waypoints: waypoints,
-      travelMode: google.maps.TravelMode.DRIVING,
-    };
-
-    const directionsService = new google.maps.DirectionsService();
-    directionsService.route(directionsServiceOptions, (result, status) => {
-      if (status === google.maps.DirectionsStatus.OK && result) {
-        setDirectionsResponse(result);
-      } else {
-        console.error(`error fetching directions ${result}`);
-      }
-    });
-  };
-
-  // DirectionsRenderer コンポーネントの追加
-  const renderDirections = () => {
-    if (directionsResponse) {
-      return (
-        <DirectionsRenderer
-          options={{
-            directions: directionsResponse,
-          }}
-        />
-      );
-    }
-  };
 
   return (
     <LoadScript
@@ -274,7 +153,7 @@ function App() {
                     onLoad={handleMapLoad}
                     onClick={handleMapClick}
                   >
-                    {renderDirections()}
+
                   </GoogleMap>
                 </div>
               </div>
