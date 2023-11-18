@@ -12,6 +12,7 @@ const center = {
   lng: 139.691706 // 東京の中心部の経度
 };
 
+
 export default function GoogleMapComponent() {
   return (
     <LoadScript
