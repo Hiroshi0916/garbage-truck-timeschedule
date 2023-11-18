@@ -1,16 +1,11 @@
 import React, { useCallback, useState } from "react";
-import {
-  GoogleMap,
-  LoadScript,
-} from "@react-google-maps/api";
+import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import Navbar from "./Navbar";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import AdminPage from "./AdminPage";
 import { SearchForm } from "./SearchForm";
-
-
 
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -32,10 +27,6 @@ function App() {
   const [position, setPosition] = useState<
     { lat: number; lng: number } | undefined
   >(defaultPosition);
-
-
-
-
 
   const getCurrentLocation = useCallback(async () => {
     try {
@@ -70,8 +61,6 @@ function App() {
     console.log("Map clicked at:", e.latLng.toString());
   };
 
-
-
   return (
     <LoadScript
       googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}
@@ -83,17 +72,15 @@ function App() {
             path="/"
             element={
               <div className="App-layout">
-    <SearchForm onSearch={handleSearch} onGetCurrentLocation={getCurrentLocation} />
-
-
-
-
+                <SearchForm
+                  onSearch={handleSearch}
+                  onGetCurrentLocation={getCurrentLocation}
+                />
               </div>
             }
           />
 
           <Route path="/admin" element={<AdminPage />} />
-
         </Routes>
       </Router>
     </LoadScript>
