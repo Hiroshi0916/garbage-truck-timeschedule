@@ -20,9 +20,6 @@ const Navbar = () => {
         {/* ユーザー情報登録ページへのリンク */}
         <Link className="menu-item" to="/user-registration" style={linkStyle}>ユーザー登録</Link>
 
-        {/* プロフィール関連のリンク */}
-        <Link className="menu-item" to="/user/profile" style={linkStyle}>プロフィール</Link>
-        <Link className="menu-item" to="/user/edit" style={linkStyle}>プロフィール編集</Link>
 
         {/* 管理者向けボタン（条件に応じて表示） */}
         {isAdmin && <Link className="menu-item" to="/admin" style={linkStyle}>Admin</Link>}
