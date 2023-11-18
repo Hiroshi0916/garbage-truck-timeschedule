@@ -17,9 +17,6 @@ const Navbar = () => {
         {/* トップページへのリンク */}
         <Link className="menu-item" to="/" style={linkStyle}>Home</Link>
         
-        {/* ユーザー情報登録ページへのリンク */}
-        <Link className="menu-item" to="/user-registration" style={linkStyle}>ユーザー登録</Link>
-
 
         {/* 管理者向けボタン（条件に応じて表示） */}
         {isAdmin && <Link className="menu-item" to="/admin" style={linkStyle}>Admin</Link>}

@@ -6,9 +6,8 @@ import {
 import Navbar from "./Navbar";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import UserRegistration from "./UserRegistration";
+
 import AdminPage from "./AdminPage";
-import UserEditForm from "./UserEditForm";
 
 
 
@@ -159,7 +158,6 @@ function App() {
           <Route path="/user-registration" element={<UserRegistration />} />
           <Route path="/admin" element={<AdminPage />} />
 
-          <Route path="/user/edit" element={<UserEditForm />} />
         </Routes>
       </Router>
     </LoadScript>
