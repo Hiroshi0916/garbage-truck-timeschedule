@@ -20,12 +20,12 @@ export default function Direction() {
 
   const [currentDirection, setCurrentDirection] = useState<google.maps.DirectionsResult | null>(null);
 
-  const directionsCallback = useCallback((response) => {
+  const directionsCallback = useCallback((response: google.maps.DirectionsResult | null, status: google.maps.DirectionsStatus) => {
     if (response !== null) {
-      if (response.status === "OK") {
+        if (status === google.maps.DirectionsStatus.OK && response) {
         setCurrentDirection(response);
       } else {
-        console.log("Directions request failed due to " + response.status);
+        console.error("Directions request failed due to " + status);
       }
     }
   }, []);
