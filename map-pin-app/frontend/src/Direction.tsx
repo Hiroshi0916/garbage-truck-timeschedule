@@ -16,15 +16,15 @@ const transitPoints = [
 ];
 
 export default function Direction() {
-  const [currentDirection, setCurrentDirection] = useState<DirectionsResult | null>(null);
-
-  const directionsCallback = useCallback((response: DirectionsResult | null, status: DirectionsStatus) => {
-    if (status === 'OK' && response) {
-      setCurrentDirection(response);
-    } else {
-      console.error(`Error fetching directions ${response}`);
-    }
-  }, []);
+    const [currentDirection, setCurrentDirection] = useState<DirectionsResult | null>(null);
+  
+    const directionsCallback = useCallback((response: DirectionsResult | null, status: DirectionsStatus) => {
+      if (status === 'OK' && response) {
+        setCurrentDirection(response);
+      } else {
+        console.error(`Error fetching directions ${response}`);
+      }
+    }, []);
 
   return (
     <>
