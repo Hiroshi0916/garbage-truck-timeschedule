@@ -21,7 +21,7 @@ export default function GoogleMapComponent() {
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
-        zoom={20} // 東京の経由地点が全て見えるようにズームレベルを調整
+        zoom={20} // ズームレベルを調整
       >
         <Direction />
       </GoogleMap>
