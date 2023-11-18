@@ -1,33 +1,16 @@
 import React, { useState } from "react";
 
-export function SearchForm({ onSearch, onGetCurrentLocation }) {
+interface SearchFormProps {
+    onSearch: (address: string, postalCode: string) => void;
+    onGetCurrentLocation: () => void;
+  }
+
+  export function SearchForm({ onSearch, onGetCurrentLocation }: SearchFormProps) {
   const [address, setAddress] = useState("");
   const [postalCode, setPostalCode] = useState("");
 
-  const handleSearch = async () => {
-    // ここで住所または郵便番号に基づいて検索処理を行い、結果を onSearch コールバックに渡す
-    console.log("Sending address:", address);
-    try {
-      const response = await fetch(`${BASE_URL}/geocode?address=${address || postalCode}`, {
-        method: "GET", 
-      });
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.json();
-
-      if (data.status === "OK") {
-        const location = data.results[0].geometry.location;
-        console.log(location);
-        onSearch(location.lat, location.lng); // 緯度と経度を onSearch に渡す
-      } else {
-        console.error("Error fetching coordinates:", data.status);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
+  const handleSearchClick = () => {
+    onSearch(address, postalCode); // App から渡された onSearch を呼び出す
   };
 
   return (
@@ -48,9 +31,13 @@ export function SearchForm({ onSearch, onGetCurrentLocation }) {
           onChange={(e) => setPostalCode(e.target.value)}
         />
       </div>
-      <button className="App-button" onClick={onGetCurrentLocation}>
+      <button className="App-button" onClick={handleSearchClick}>
         検索
       </button>
+      <button className="App-button" onClick={onGetCurrentLocation}>
+        現在地を取得
+      </button>
+
     </div>
   );
 }

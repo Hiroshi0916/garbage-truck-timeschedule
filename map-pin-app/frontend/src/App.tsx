@@ -50,15 +50,35 @@ function App() {
     }
   }, []);
 
-  // マップ読み込み時の処理
-  const handleMapLoad = (map: any) => {
-    console.log("Position:", position);
 
-    console.log("Google Map is loaded!", map);
-  };
 
-  const handleMapClick = (e: any) => {
-    console.log("Map clicked at:", e.latLng.toString());
+  const handleSearch = async (address: string, postalCode: string) => {
+    // ここで住所または郵便番号に基づいて検索処理を行い、結果を onSearch コールバックに渡す
+    console.log("Sending address:", address);
+    try {
+      const response = await fetch(`${BASE_URL}/geocode?address=${address || postalCode}`, {
+        method: "GET", 
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+
+      if (data.status === "OK") {
+        const location = data.results[0].geometry.location;
+        console.log(location);
+        setPosition({ lat: location.lat, lng: location.lng });
+        setLat(location.lat);
+        setLng(location.lng);
+      } else {
+        console.error("Error fetching coordinates:", data.status);
+      }
+
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
