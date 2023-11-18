@@ -40,7 +40,7 @@ function App() {
       const response = await fetch(
         `${BASE_URL}/geocode?address=${address || postalCode}`,
         {
-          method: "GET", // GETリクエストでバックエンドに送信
+          method: "GET", 
         }
       );
 
@@ -155,7 +155,6 @@ function App() {
             }
           />
 
-          <Route path="/user-registration" element={<UserRegistration />} />
           <Route path="/admin" element={<AdminPage />} />
 
         </Routes>
