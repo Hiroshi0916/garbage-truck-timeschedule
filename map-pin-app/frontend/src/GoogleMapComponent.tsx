@@ -8,8 +8,8 @@ const containerStyle = {
 };
 
 const center = {
-  lat: 42.755955,
-  lng: 141.32816
+  lat: 35.689487, // 東京の中心部の緯度
+  lng: 139.691706 // 東京の中心部の経度
 };
 
 export default function GoogleMapComponent() {
@@ -20,7 +20,7 @@ export default function GoogleMapComponent() {
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
-        zoom={10}
+        zoom={10} // 東京の経由地点が全て見えるようにズームレベルを調整
       >
         <Direction />
       </GoogleMap>
