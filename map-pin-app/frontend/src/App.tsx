@@ -8,6 +8,7 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import AdminPage from "./AdminPage";
+import { SearchForm } from "./SearchForm";
 
 
 
@@ -34,35 +35,7 @@ function App() {
 
 
 
-  const handleSearch = async () => {
-    console.log("Sending address:", address);
-    try {
-      const response = await fetch(
-        `${BASE_URL}/geocode?address=${address || postalCode}`,
-        {
-          method: "GET", 
-        }
-      );
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.json();
-
-      if (data.status === "OK") {
-        const location = data.results[0].geometry.location;
-        console.log(location);
-        setPosition({ lat: location.lat, lng: location.lng });
-        setLat(location.lat);
-        setLng(location.lng);
-      } else {
-        console.error("Error fetching coordinates:", data.status);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
 
   const getCurrentLocation = useCallback(async () => {
     try {
@@ -110,47 +83,11 @@ function App() {
             path="/"
             element={
               <div className="App-layout">
-                <div className="App-search-container">
-                  <div className="App-input-group">
-                    <label>住所:</label>
-                    <input
-                      className="App-input"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                    />
-                  </div>
-                  <div className="App-input-group">
-                    <label>郵便番号:</label>
-                    <input
-                      className="App-input"
-                      value={postalCode}
-                      onChange={(e) => setPostalCode(e.target.value)}
-                    />
-                  </div>
-                  <button className="App-button" onClick={getCurrentLocation}>
-                    現在地を取得
-                  </button>
-                  <button className="App-button" onClick={handleSearch}>
-                    検索
-                  </button>
-                  <div className="App-coordinates">
-                    緯度: {lat ? lat.toFixed(6) : "N/A"}
-                    <br />
-                    経度: {lng ? lng.toFixed(6) : "N/A"}
-                  </div>
-                </div>
+    <SearchForm onSearch={handleSearch} onGetCurrentLocation={getCurrentLocation} />
 
-                <div className="App-map-container">
-                  <GoogleMap
-                    mapContainerStyle={mapContainerStyle}
-                    center={position}
-                    zoom={13}
-                    onLoad={handleMapLoad}
-                    onClick={handleMapClick}
-                  >
 
-                  </GoogleMap>
-                </div>
+
+
               </div>
             }
           />
