@@ -18,7 +18,7 @@ export default function Direction() {
     { location: { lat: 35.706646, lng: 139.756749 }, stopover: true }, // 御成門駅
   ];
 
-  const [currentDirection, setCurrentDirection] = useState(null);
+  const [currentDirection, setCurrentDirection] = useState<google.maps.DirectionsResult | null>(null);
 
   const directionsCallback = useCallback((response) => {
     if (response !== null) {
