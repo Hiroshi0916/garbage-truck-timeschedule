@@ -19,8 +19,6 @@ const AdminPage = () => {
   const defaultCenter = { lat: 35.6895, lng: 139.6917 }; // 初期の中心点（例：東京）
 
 
-
-
   useEffect(() => {
     localStorage.setItem("addresses", JSON.stringify(addresses));
   }, [addresses]);
