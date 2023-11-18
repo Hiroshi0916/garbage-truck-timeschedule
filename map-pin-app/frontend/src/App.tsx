@@ -74,11 +74,12 @@ function App() {
                 />
 
                 <GoogleMap
+                   key={window.location.pathname} // ルートのパスをキーとして使用
                   mapContainerStyle={mapContainerStyle}
                   center={defaultPosition}
                   zoom={10}
                 >
-                  <Direction /> {/* Direction コンポーネントを使用 */}
+                  <Direction />
                 </GoogleMap>
               </div>
             }

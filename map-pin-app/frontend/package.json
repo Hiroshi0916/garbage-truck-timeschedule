@@ -37,6 +37,7 @@
     "web-vitals": "^3.5.0"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/googlemaps": "^3.43.3",
     "@types/jest": "^29.5.7",
     "@types/react": "^18.2.33",
