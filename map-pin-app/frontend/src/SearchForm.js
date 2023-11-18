@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export function SearchForm({ onSearch }) {
+export function SearchForm({ onSearch, onGetCurrentLocation }) {
   const [address, setAddress] = useState("");
   const [postalCode, setPostalCode] = useState("");
 
@@ -48,7 +48,7 @@ export function SearchForm({ onSearch }) {
           onChange={(e) => setPostalCode(e.target.value)}
         />
       </div>
-      <button className="App-button" onClick={handleSearch}>
+      <button className="App-button" onClick={onGetCurrentLocation}>
         検索
       </button>
     </div>
