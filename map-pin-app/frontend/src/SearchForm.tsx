@@ -16,7 +16,7 @@ interface SearchFormProps {
   return (
     <div className="App-search-container">
       <div className="App-input-group">
-        <label>住所:</label>
+      <label htmlFor="address">住所:</label>
         <input
           className="App-input"
           value={address}
@@ -24,7 +24,7 @@ interface SearchFormProps {
         />
       </div>
       <div className="App-input-group">
-        <label>郵便番号:</label>
+      <label htmlFor="postalCode">郵便番号:</label>
         <input
           className="App-input"
           value={postalCode}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import './AdminPage.css';
 import axios from 'axios';
-import { GoogleMap, LoadScript, Polyline } from '@react-google-maps/api';
+import { LoadScript } from '@react-google-maps/api';
 import { AddressInfo } from "./types";
 
 const AdminPage = () => {
