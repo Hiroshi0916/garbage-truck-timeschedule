@@ -14,6 +14,7 @@ const center = {
 
 
 export default function GoogleMapComponent() {
+
   return (
     <LoadScript
       googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}
@@ -21,7 +22,7 @@ export default function GoogleMapComponent() {
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
-        zoom={20} // ズームレベルを調整
+        zoom={10} // 東京の経由地点が全て見えるようにズームレベルを調整
       >
         <Direction />
       </GoogleMap>
