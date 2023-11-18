@@ -26,25 +26,25 @@ export default function Direction() {
       }
     }, []);
 
-  return (
-    <>
-      <DirectionsService
-        options={{
-          origin,
-          destination,
-          travelMode: 'DRIVING',
-          optimizeWaypoints: true,
-          waypoints: transitPoints,
-        }}
-        callback={directionsCallback}
-      />
-      {currentDirection && (
-        <DirectionsRenderer
-          options={{
-            directions: currentDirection,
-          }}
-        />
-      )}
-    </>
-  );
-}
+    return (
+        <>
+          <DirectionsService
+            options={{
+              origin,
+              destination,
+              travelMode: google.maps.TravelMode.DRIVING, // この行を更新
+              optimizeWaypoints: true,
+              waypoints: transitPoints,
+            }}
+            callback={directionsCallback}
+          />
+          {currentDirection && (
+            <DirectionsRenderer
+              options={{
+                directions: currentDirection,
+              }}
+            />
+          )}
+        </>
+      );
+    }
