@@ -63,14 +63,14 @@ function App() {
 
   const googleMapRef = useRef<google.maps.Map | undefined>(); // 型を undefined に変更
 
-  const onGoogleMapMounted = useCallback((map) => {
+  const onGoogleMapMounted = useCallback((map: google.maps.Map) => { // map パラメータに型を追加
     googleMapRef.current = map;
     setGoogleMap(map); // ステートを更新
   }, []);
 
 
   const onGoogleMapUnmounted = useCallback(() => {
-    googleMapRef.current = null;
+    googleMapRef.current = undefined; // null の代わりに undefined を使用
     setGoogleMap(null); // ステートをクリア
   }, []);
 
