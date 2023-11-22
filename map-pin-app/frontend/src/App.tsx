@@ -60,7 +60,8 @@ function App() {
   };
   const defaultPosition = { lat: 35.681236, lng: 139.767125 }; // 東京駅
 
-  const googleMapRef = useRef<google.maps.Map>(); // Ref for the Google Map instance
+
+  const googleMapRef = useRef<google.maps.Map | undefined>(); // 型を undefined に変更
 
   const onGoogleMapMounted = useCallback((map) => {
     googleMapRef.current = map;
