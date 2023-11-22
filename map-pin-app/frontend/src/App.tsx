@@ -85,7 +85,7 @@ function App() {
       onLoad={onGoogleMapMounted}
       onUnmount={onGoogleMapUnmounted}
     >
-            <Direction googleMap={googleMapRef.current} /> 
+            <Direction /> 
         </GoogleMap>
       </Router>
     </LoadScript>
