@@ -79,7 +79,7 @@ function App() {
 
     // GoogleMap コンポーネントがアンマウントされたら、DirectionsRenderer コンポーネントをレンダリングしない
     const onGoogleMapUnmounted = () => {
-      googleMapRef.current = null;
+      googleMapRef.current = undefined;
     };
 
     googleMapRef.current = new GoogleMap({
