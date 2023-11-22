@@ -72,30 +72,7 @@ function App() {
     googleMapRef.current = undefined;  // null の代わりに undefined を使用
   }, []);
 
-  useEffect(() => {
-    const onGoogleMapMounted = (map:any) => {
-      googleMapRef.current = map;
-    };
 
-    // GoogleMap コンポーネントがアンマウントされたら、DirectionsRenderer コンポーネントをレンダリングしない
-    const onGoogleMapUnmounted = () => {
-      googleMapRef.current = undefined;
-    };
-
-    googleMapRef.current = new GoogleMap({
-      key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-      mapContainerStyle,
-      center: defaultPosition,
-      zoom: 10,
-    });
-
-    googleMapRef.current.on("mount", onGoogleMapMounted);
-    googleMapRef.current.on("unmount", onGoogleMapUnmounted);
-    return () => {
-      googleMapRef.current.off("mount", onGoogleMapMounted);
-      googleMapRef.current.off("unmount", onGoogleMapUnmounted);
-    };
-  }, [defaultPosition, mapContainerStyle]); // Include dependencies
 
   return (
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}>
