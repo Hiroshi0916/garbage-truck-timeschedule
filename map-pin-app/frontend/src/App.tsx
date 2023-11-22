@@ -10,7 +10,7 @@ import { SearchForm } from "./SearchForm";
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 const [googleMap, setGoogleMap] = useState<GoogleMap | null>(null);
 
-const googleMapRef = useRef<google.maps.Map>();
+const googleMapRef = useRef<google.maps.Map | null>(null); 
 
 function App() {
   const getCurrentLocation = useCallback(async () => {
@@ -69,12 +69,11 @@ function App() {
 
 
   const onGoogleMapUnmounted = useCallback(() => {
-    googleMapRef.current = undefined; // null の代わりに undefined を使用
-    setGoogleMap(null); // ステートをクリア
+    googleMapRef.current = undefined;  // null の代わりに undefined を使用
   }, []);
 
   useEffect(() => {
-    const onGoogleMapMounted = (map) => {
+    const onGoogleMapMounted = (map:any) => {
       googleMapRef.current = map;
     };
 
@@ -109,7 +108,7 @@ function App() {
       onLoad={onGoogleMapMounted}
       onUnmount={onGoogleMapUnmounted}
     >
-             <Direction googleMap={googleMapRef.current} /> 
+            <Direction googleMap={googleMapRef.current} /> 
         </GoogleMap>
       </Router>
     </LoadScript>
