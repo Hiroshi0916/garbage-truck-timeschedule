@@ -63,9 +63,8 @@ function App() {
 
   const googleMapRef = useRef<google.maps.Map | undefined>(); // 型を undefined に変更
 
-  const onGoogleMapMounted = useCallback((map: google.maps.Map) => { // map パラメータに型を追加
+  const onGoogleMapMounted = useCallback((map: google.maps.Map) => {
     googleMapRef.current = map;
-    setGoogleMap(map); // ステートを更新
   }, []);
 
 
@@ -104,13 +103,13 @@ function App() {
       <Router>
         {/* 省略された他のコンポーネント... */}
         <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          center={defaultPosition}
-          zoom={10}
-          onLoad={onGoogleMapMounted}
-          onUnmount={onGoogleMapUnmounted}
-        >
-          <Direction googleMap={googleMapRef.current} />
+      mapContainerStyle={mapContainerStyle}
+      center={defaultPosition}
+      zoom={10}
+      onLoad={onGoogleMapMounted}
+      onUnmount={onGoogleMapUnmounted}
+    >
+             <Direction googleMap={googleMapRef.current} /> 
         </GoogleMap>
       </Router>
     </LoadScript>
