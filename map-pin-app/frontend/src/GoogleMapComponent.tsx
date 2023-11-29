@@ -8,8 +8,8 @@ const containerStyle = {
 };
 
 const center = {
-  lat: 35.689487, // 東京の中心部の緯度
-  lng: 139.691706 // 東京の中心部の経度
+  lat: 35.689487, 
+  lng: 139.691706 
 };
 
 
