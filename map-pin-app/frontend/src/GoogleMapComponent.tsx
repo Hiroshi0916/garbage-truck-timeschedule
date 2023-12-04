@@ -14,7 +14,6 @@ const center = {
 
 
 export default function GoogleMapComponent() {
-
   
   return (
     <LoadScript
