@@ -12,6 +12,7 @@ interface GoogleMapsAPIContextType {
 // Contextの作成
 const GoogleMapsAPIContext = createContext<GoogleMapsAPIContextType>(defaultContextValue);
 
+
 // Providerコンポーネントの作成
 export const GoogleMapsAPIProvider = ({ children }: { children: ReactNode }) => {
     const [isLoaded, setIsLoaded] = useState(false);
