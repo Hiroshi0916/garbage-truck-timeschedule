@@ -12,8 +12,6 @@ const AdminPage = () => {
   const [currentPostalCode, setCurrentPostalCode] = useState("");
   const [currentOrder] = useState("");
 
-
-
   useEffect(() => {
     localStorage.setItem("addresses", JSON.stringify(addresses));
   }, [addresses]);
